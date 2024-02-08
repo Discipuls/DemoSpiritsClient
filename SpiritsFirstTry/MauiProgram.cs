@@ -2,6 +2,7 @@
 using Esri.ArcGISRuntime.Maui;
 using Microsoft.Extensions.Logging;
 using SpiritsFirstTry.ViewModels;
+using The49.Maui.BottomSheet;
 
 namespace SpiritsFirstTry
 {
@@ -12,10 +13,12 @@ namespace SpiritsFirstTry
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseBottomSheet()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("A DAY WITHOUT SUN.otf", "Asterlight");
                 });
 
 #if DEBUG
@@ -25,6 +28,9 @@ namespace SpiritsFirstTry
 
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<MainViewModel>();
+
+            builder.Services.AddTransient<BottomSheetView>();
+            builder.Services.AddTransient<BottomSheetViewModel>();
 
             return builder.Build();
         }

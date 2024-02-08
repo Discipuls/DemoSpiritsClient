@@ -47,7 +47,7 @@
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
+		<MauiImage Include="Resources\MauiImages\*" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -57,12 +57,63 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiImage Remove="Resources\Images\dotnet_bot.png" />
+	</ItemGroup>
+
+	
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\Images\adnaroh.png" />
+	  <EmbeddedResource Include="Resources\Images\apivien.png" />
+	  <EmbeddedResource Include="Resources\Images\aziarnizy.png" />
+	  <EmbeddedResource Include="Resources\Images\badziulia.png" />
+	  <EmbeddedResource Include="Resources\Images\balamucien.png" />
+	  <EmbeddedResource Include="Resources\Images\chapun.png" />
+	  <EmbeddedResource Include="Resources\Images\chichitun.png" />
+	  <EmbeddedResource Include="Resources\Images\dotnet_bot.png" />
+	  <EmbeddedResource Include="Resources\Images\dziundzik.png" />
+	  <EmbeddedResource Include="Resources\Images\halyshka.png" />
+	  <EmbeddedResource Include="Resources\Images\kapialiushnik.png" />
+	  <EmbeddedResource Include="Resources\Images\kautun.png" />
+	  <EmbeddedResource Include="Resources\Images\kuka.png" />
+	  <EmbeddedResource Include="Resources\Images\kurnalia.png" />
+	  <EmbeddedResource Include="Resources\Images\liamiec.png" />
+	  <EmbeddedResource Include="Resources\Images\liasny_cmok.png" />
+	  <EmbeddedResource Include="Resources\Images\liesavaja.png" />
+	  <EmbeddedResource Include="Resources\Images\liesavik.png" />
+	  <EmbeddedResource Include="Resources\Images\lizun.png" />
+	  <EmbeddedResource Include="Resources\Images\naktyr.png" />
+	  <EmbeddedResource Include="Resources\Images\padnor.png" />
+	  <EmbeddedResource Include="Resources\Images\paraliki.png" />
+	  <EmbeddedResource Include="Resources\Images\piaczurnik.png" />
+	  <EmbeddedResource Include="Resources\Images\punnik.png" />
+	  <EmbeddedResource Include="Resources\Images\pushczavik.png" />
+	  <EmbeddedResource Include="Resources\Images\siarbaj.png" />
+	  <EmbeddedResource Include="Resources\Images\spornik.png" />
+	  <EmbeddedResource Include="Resources\Images\stryha.png" />
+	  <EmbeddedResource Include="Resources\Images\sviciazianki.png" />
+	  <EmbeddedResource Include="Resources\Images\vuzhalki.png" />
+	  <EmbeddedResource Include="Resources\Images\zazouka.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Esri.ArcGISRuntime.Maui" Version="200.3.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 		<PackageReference Include="The49.Maui.BottomSheet" Version="8.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="BottomSheetView.xaml.cs">
+	    <DependentUpon>BottomSheetView.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="BottomSheetView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
