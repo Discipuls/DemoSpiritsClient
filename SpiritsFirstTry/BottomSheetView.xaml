@@ -4,7 +4,8 @@
              x:Class="SpiritsFirstTry.BottomSheetView"
              xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
              xmlns:viewmodel="clr-namespace:SpiritsFirstTry.ViewModels"
-             x:DataType="viewmodel:BottomSheetViewModel">
+             x:DataType="viewmodel:BottomSheetViewModel"
+                   BackgroundColor="#333333">
 
     
         <Grid>
@@ -22,12 +23,14 @@
                             FontSize="70" 
                             VerticalTextAlignment="Center"
                             HorizontalTextAlignment="Start" FontFamily="Asterlight"
+                            TextColor="#cccccc"
                             />
                         <Label 
                             Text="{Binding Selected.Name, StringFormat='{0}'}"
                             FontSize="100"
                             VerticalTextAlignment="Start"
                             HorizontalTextAlignment="Start" FontFamily="Asterlight"
+                            TextColor="#cccccc"
                             />              
                     </StackLayout>
 
@@ -38,12 +41,14 @@
                             FontSize="50" 
                             VerticalTextAlignment="Center"
                             HorizontalTextAlignment="Start" FontFamily="Asterlight"
+                            TextColor="#cccccc"
                             />      
                         <Label 
                             Text="{Binding Selected.ClassificationString, StringFormat='{0}'}"
                             FontSize="70" Margin="5"
                             VerticalTextAlignment="Start"
-                            HorizontalTextAlignment="Start" FontFamily="Asterlight"/>
+                            HorizontalTextAlignment="Start" FontFamily="Asterlight"
+                            TextColor="#cccccc"/>
                     </StackLayout>
 
                         <Label 
@@ -51,24 +56,28 @@
                             FontSize="50" 
                             VerticalTextAlignment="Center"
                             HorizontalTextAlignment="Center" FontFamily="Asterlight"
+                            TextColor="#cccccc"
                             />
                         <Label 
                         Text="{Binding Selected.HabitatsString, StringFormat='{0}'}"
                         FontSize="40"
                         VerticalTextAlignment="Start"
-                        HorizontalTextAlignment="Start" FontFamily="Asterlight"/>
+                        HorizontalTextAlignment="Start" FontFamily="Asterlight"
+                            TextColor="#cccccc"/>
 
 
                     <Label 
                         Text="Кароткія звесткі:"
                         FontSize="50" 
                         VerticalTextAlignment="Start"
-                        HorizontalTextAlignment="Center" FontFamily="Asterlight"/>
+                        HorizontalTextAlignment="Center" FontFamily="Asterlight"
+                            TextColor="#cccccc"/>
                     <Label 
                         Text="{Binding Selected.Description, StringFormat='{0}'}"
                         FontSize="30"
                         VerticalTextAlignment="Start"
-                        HorizontalTextAlignment="Start" FontFamily="Asterlight"/>
+                        HorizontalTextAlignment="Start" FontFamily="Asterlight"
+                            TextColor="#cccccc"/>
                 </StackLayout>
             </Grid>
         </ScrollView>
@@ -77,7 +86,8 @@
               RowDefinitions="0.1*, 0.9*" Background="#616161">
                 <SearchBar x:Name="searchbar" SearchCommand="{Binding performSearchCommand}"
                        TextChanged="search_TextChanged"
-                       Grid.Row="0" FontSize="30" FontFamily="Asterlight"/>
+                       Grid.Row="0" FontSize="30" FontFamily="Asterlight" 
+                            TextColor="#cccccc"/>
 
                 <CollectionView Grid.Row="1"
                  ItemsSource="{Binding SearchResults}"
@@ -92,7 +102,8 @@
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:BottomSheetViewModel}},Path=TapCommand}"
                                             CommandParameter="{Binding .}"/>
                                     </Frame.GestureRecognizers>
-                                    <Label Text="{Binding .}"  FontSize="30" FontFamily="Asterlight"/>
+                                <Label Text="{Binding .}"  FontSize="30" FontFamily="Asterlight" 
+                            TextColor="#cccccc"/>
                                 </Frame>
                             </Grid>
                         </DataTemplate>

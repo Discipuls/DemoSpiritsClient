@@ -10,6 +10,7 @@ namespace SpiritsFirstTry
         public MainPage(MainViewModel vm)
         {
             InitializeComponent();
+            Application.Current.UserAppTheme = AppTheme.Dark;
             BindingContext = vm;
             mainViewModel = vm;
             vm.SetupMap(MainMapView);
