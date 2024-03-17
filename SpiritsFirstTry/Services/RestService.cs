@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualBasic;
-using SpiritsFirstTry.DTOs.SpiritDTOs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,15 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using SpiritsClassLibrary.DTOs;
+using SpiritsClassLibrary.Models;
+using SpiritsClassLibrary.DTOs.SpiritDTOs;
+using SpiritsClassLibrary.DTOs.HabitatDTOs;
 
 namespace SpiritsFirstTry.Services
 {
-    public class RestService
+    public class RestService : IRestService
     {
-
-
         HttpClient _client;
         JsonSerializerOptions _serializerOptions;
+        string _baseUrl = "https://husky-evolved-radically.ngrok-free.app";
 
         public RestService() { 
             _client = new HttpClient();
@@ -26,23 +28,99 @@ namespace SpiritsFirstTry.Services
             };
         }
 
-        public async Task<List<GetSpiritBasicDTO>> GetAllAsync()
+        public async Task CreateHabitatAsync(CreateHabitatDTO createHabitatDTO)
         {
-            var spirits = new List<GetSpiritBasicDTO>();
+            throw new NotImplementedException();
+        }
+
+        public async Task CreateSpiritAsync(CreateSpiritDTO createSpiritDTO)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task DeleteHabitatAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task DeleteSpiritAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<GetHabitatDTO>> GetAllHabitatsAsync()
+        {
+            var habitats = new List<GetHabitatDTO>();
 
             try
             {
-                HttpResponseMessage respone = await _client.GetAsync("https://b701-46-53-235-28.ngrok-free.app/Spirit");
+                HttpResponseMessage respone = await _client.GetAsync(_baseUrl + "/Habitat");
                 if (respone.IsSuccessStatusCode)
                 {
                     string content = await respone.Content.ReadAsStringAsync();
-                    spirits = JsonSerializer.Deserialize<List<GetSpiritBasicDTO>>(content, _serializerOptions);
+                    habitats = JsonSerializer.Deserialize<List<GetHabitatDTO>>(content, _serializerOptions);
                 }
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            return habitats;
+        }
+
+        public async Task<List<GetSpiritBasicsDTO>> GetAllSpiritsAsync()
+        {
+            var spirits = new List<GetSpiritBasicsDTO>();
+
+            try
+            {
+                HttpResponseMessage respone = await _client.GetAsync(_baseUrl + "/spirit");
+                if (respone.IsSuccessStatusCode)
+                {
+                    string content = await respone.Content.ReadAsStringAsync();
+                    spirits = JsonSerializer.Deserialize<List<GetSpiritBasicsDTO>>(content, _serializerOptions);
+                }
+            }
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
             return spirits;
+        }
+
+        public async Task<GetHabitatDTO> GetHabitatAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<GetSpiritDTO> GetSpiritAsync(int id)
+        {
+            var spirit = new GetSpiritDTO();
+
+            try
+            {
+                HttpResponseMessage respone = await _client.GetAsync(_baseUrl + "/spirit/" + id.ToString());
+                if (respone.IsSuccessStatusCode)
+                {
+                    string content = await respone.Content.ReadAsStringAsync();
+                    spirit = JsonSerializer.Deserialize<GetSpiritDTO>(content, _serializerOptions);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            return spirit;
+        }
+
+        public async Task UpdateHabitatAsync(UpdateHabitatDTO updateHabitatDTO)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task UpdateSpiritAsync(UpdateSpiritDTO updateSpiritDTO)
+        {
+            throw new NotImplementedException();
         }
     }
 

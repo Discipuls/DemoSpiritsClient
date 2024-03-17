@@ -14,7 +14,7 @@
             <Grid RowDefinitions="0.3*, *" Padding="20,0" 
               IsVisible="{Binding IsSpiritOpend}"
               x:Name="SpiritGrid">
-                <Image Source="{Binding Selected.Image_name_t}"
+                <Image Source="{Binding Selected.CardImageName}"
                     Grid.Row="0"/>
                 <StackLayout Grid.Row="1">
                     <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">

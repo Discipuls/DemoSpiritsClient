@@ -16,7 +16,7 @@ namespace SpiritsFirstTry.ViewModels
     public partial class BottomSheetViewModel : ObservableObject
     {
         [ObservableProperty]
-        Spirit selected;
+        MapSpirit selected;
         [ObservableProperty]
         bool isSearchOpend;
         [ObservableProperty]
@@ -26,12 +26,12 @@ namespace SpiritsFirstTry.ViewModels
 
         public MapView mapView { get; set; }
 
-        public List<Spirit> spiritList = new List<Spirit>();
+        public List<MapSpirit> spiritList = new List<MapSpirit>();
         public List<Graphic> regions = new List<Graphic>();
 
         [ObservableProperty]
         ObservableCollection<String> searchResults = new ObservableCollection<String>();
-        public void SetSelectedSpirit(Spirit spirit)
+        public void SetSelectedSpirit(MapSpirit spirit)
         {
             Selected = spirit;
         }
@@ -176,7 +176,7 @@ namespace SpiritsFirstTry.ViewModels
                         spirit.polygonGraphic.IsVisible = true;
                         spirit.markerSymbol.Height = 60;
                         spirit.markerSymbol.Width = 60;
-                        spirit.pinGraphic.ZIndex = Spirit.maxzindex + 1;
+                        spirit.pinGraphic.ZIndex = MapSpirit.maxzindex + 1;
                         break;
                     }
                 }

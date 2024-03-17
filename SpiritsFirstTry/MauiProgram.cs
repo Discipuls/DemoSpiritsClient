@@ -1,6 +1,7 @@
 ﻿using Esri.ArcGISRuntime;
 using Esri.ArcGISRuntime.Maui;
 using Microsoft.Extensions.Logging;
+using SpiritsFirstTry.AutoMappers;
 using SpiritsFirstTry.Services;
 using SpiritsFirstTry.ViewModels;
 using The49.Maui.BottomSheet;
@@ -26,13 +27,15 @@ namespace SpiritsFirstTry
     		builder.Logging.AddDebug();
 #endif
             builder.UseArcGISRuntime(config => config.UseApiKey("AAPK5097e917f3254b0fb46110d95982e99exKDkBAgOLzsIkGV76szaup4bRsialeK74tnC5M4D-QeyQGGrcERl11Q7BZFmAQ5y"));
+            builder.Services.AddAutoMapper(typeof(SpiritAutoMapper));
 
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<MainViewModel>();
-            builder.Services.AddSingleton<RestService>();
+            builder.Services.AddSingleton<IRestService,RestService>();
 
             builder.Services.AddTransient<BottomSheetView>();
             builder.Services.AddTransient<BottomSheetViewModel>();
+
 
             return builder.Build();
         }
