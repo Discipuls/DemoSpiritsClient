@@ -17,6 +17,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using The49.Maui.BottomSheet;
 using Map = Esri.ArcGISRuntime.Mapping.Map;
@@ -187,28 +188,58 @@ namespace SpiritsFirstTry.ViewModels
 
         public async Task LoadSpirits()
         {
-            //TODO save all objects to sql lite database on device
             List<GetSpiritBasicsDTO> result = await _restService.GetAllSpiritsAsync();
-/*            GetGeoPointDTO getGeoPointDTO = new GetGeoPointDTO { Latitude = 1, Longitude = 2 };
-            var ttt = _mapper.Map<MarkerPoint>(result[0].MarkerLocation);
 
-            GetSpiritBasicsDTO temp = result[0];
-            var t = _mapper.Map<MapSpirit>(temp);*/
-            Spirits = result.Select(s => _mapper.Map<MapSpirit>(s)).ToList();
 
-            foreach(var spirit in Spirits)
+            if (result.Count == 0)
             {
-                var tspirit = await _restService.GetSpiritAsync(spirit.Id);
+                string localFilePath = Path.Combine(FileSystem.CacheDirectory, "Spirits.json");
+                using FileStream fileStream = File.OpenRead(localFilePath);
+                var buffer = new byte[fileStream.Length];
+                await fileStream.ReadAsync(buffer, 0, buffer.Length);
+                string s = Encoding.Default.GetString(buffer);
 
-                MemoryStream cardImageMS = new MemoryStream(tspirit.MarkerImage);
+                result = JsonSerializer.Deserialize<List<GetSpiritBasicsDTO>>(s);
+                Spirits = result.Select(s => _mapper.Map<MapSpirit>(s)).ToList();
 
-                string localFilePath = Path.Combine(FileSystem.CacheDirectory, "MarkerImage_"+spirit.Id.ToString()+"_.png");
-
-               // using Stream sourceStream = await photo.OpenReadAsync();
-                using FileStream localFileStream = File.OpenWrite(localFilePath);
-
-                await cardImageMS.CopyToAsync(localFileStream);
             }
+            else
+            {
+                var json = JsonSerializer.Serialize(result);
+                Console.WriteLine(json);
+                var spiritsMS = new MemoryStream();
+                var spiritsSW = new StreamWriter(spiritsMS);
+                spiritsSW.Write(json);
+                spiritsSW.Flush();
+                spiritsMS.Flush();
+                spiritsMS.Position = 0;
+
+                string localFilePath = Path.Combine(FileSystem.CacheDirectory, "Spirits.json");
+                using FileStream fileStream = File.OpenWrite(localFilePath);
+
+                await spiritsMS.CopyToAsync(fileStream);
+
+                Spirits = result.Select(s => _mapper.Map<MapSpirit>(s)).ToList();
+
+
+                foreach (var spirit in Spirits)
+                {
+                    var tspirit = await _restService.GetSpiritAsync(spirit.Id);
+
+                    MemoryStream cardImageMS = new MemoryStream(tspirit.MarkerImage);
+
+                    string localFilePath2 = Path.Combine(FileSystem.CacheDirectory, "MarkerImage_" + spirit.Id.ToString() + "_.png");
+
+                    // using Stream sourceStream = await photo.OpenReadAsync();
+                    using FileStream localFileStream = File.OpenWrite(localFilePath2);
+
+                    await cardImageMS.CopyToAsync(localFileStream);
+                }
+            }
+
+
+
+
                 // save the file into local storage
 
 
