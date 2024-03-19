@@ -72,18 +72,15 @@ namespace SpiritsFirstTry.Services
         {
             var spirits = new List<GetSpiritBasicsDTO>();
 
-            try
+            HttpResponseMessage respone = await _client.GetAsync(_baseUrl + "/spirit");
+            if (respone.IsSuccessStatusCode)
             {
-                HttpResponseMessage respone = await _client.GetAsync(_baseUrl + "/spirit");
-                if (respone.IsSuccessStatusCode)
-                {
-                    string content = await respone.Content.ReadAsStringAsync();
-                    spirits = JsonSerializer.Deserialize<List<GetSpiritBasicsDTO>>(content, _serializerOptions);
-                }
+                string content = await respone.Content.ReadAsStringAsync();
+                spirits = JsonSerializer.Deserialize<List<GetSpiritBasicsDTO>>(content, _serializerOptions);
             }
-            catch (Exception ex)
+            else
             {
-                Debug.WriteLine(ex.Message);
+                throw new Exception("Spirits API unavailable");
             }
             return spirits;
         }
@@ -97,19 +94,13 @@ namespace SpiritsFirstTry.Services
         {
             var spirit = new GetSpiritDTO();
 
-            try
+            HttpResponseMessage respone = await _client.GetAsync(_baseUrl + "/spirit/" + id.ToString());
+            if (respone.IsSuccessStatusCode)
             {
-                HttpResponseMessage respone = await _client.GetAsync(_baseUrl + "/spirit/" + id.ToString());
-                if (respone.IsSuccessStatusCode)
-                {
-                    string content = await respone.Content.ReadAsStringAsync();
-                    spirit = JsonSerializer.Deserialize<GetSpiritDTO>(content, _serializerOptions);
-                }
+                string content = await respone.Content.ReadAsStringAsync();
+                spirit = JsonSerializer.Deserialize<GetSpiritDTO>(content, _serializerOptions);
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
+
             return spirit;
         }
 

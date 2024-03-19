@@ -73,7 +73,15 @@ namespace SpiritsFirstTry.ViewModels
 
         private async Task Initialize()
         {
-            await LoadSpirits();
+            try
+            {
+                await LoadSpirits();
+            }
+            catch (Exception e)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", e.ToString(), "OK");
+            }
+
 
             try
             {
@@ -185,63 +193,113 @@ namespace SpiritsFirstTry.ViewModels
             }
         }
 
+        private async Task<List<GetSpiritBasicsDTO>> LoadJSONSpirits()
+        {
+            string localFilePath = Path.Combine(FileSystem.CacheDirectory, "Spirits.json");
+            using FileStream fileStream = File.OpenRead(localFilePath);
+            var buffer = new byte[fileStream.Length];
+            await fileStream.ReadAsync(buffer, 0, buffer.Length);
+            string s = Encoding.Default.GetString(buffer);
+
+            var JSONSpirits = JsonSerializer.Deserialize<List<GetSpiritBasicsDTO>>(s);
+            return JSONSpirits;
+        }
+
+        private async Task SaveSpiritsToJson(List<GetSpiritBasicsDTO> spirits)
+        {
+            var json = JsonSerializer.Serialize(spirits);
+            var spiritsMS = new MemoryStream();
+            var spiritsSW = new StreamWriter(spiritsMS);
+            spiritsSW.Write(json);
+            spiritsSW.Flush();
+            spiritsMS.Position = 0;
+
+            string localFilePath = Path.Combine(FileSystem.CacheDirectory, "Spirits.json");
+            using FileStream fileStream = File.OpenWrite(localFilePath);
+
+            await spiritsMS.CopyToAsync(fileStream);
+        }
+
+        private async Task<GetSpiritDTO> UpdateMissedSpirit(GetSpiritBasicsDTO spiritBasicsDTO)
+        {
+            var spirit = await _restService.GetSpiritAsync(spiritBasicsDTO.Id);
+
+            MemoryStream markerImageMS = new MemoryStream(spirit.MarkerImage);
+            string markerFilePath = Path.Combine(FileSystem.CacheDirectory, "MarkerImage_" + spirit.Id.ToString() + "_.png");
+            using FileStream markerFileStream = File.OpenWrite(markerFilePath);
+            await markerImageMS.CopyToAsync(markerFileStream);
+
+            MemoryStream cardImageMS = new MemoryStream(spirit.MarkerImage);
+            string cardFilePath = Path.Combine(FileSystem.CacheDirectory, "CardImage_" + spirit.Id.ToString() + "_.png");
+            using FileStream cardFileStream = File.OpenWrite(cardFilePath);
+            await cardImageMS.CopyToAsync(cardFileStream);
+
+            return spirit;
+        }
 
         public async Task LoadSpirits()
         {
-            List<GetSpiritBasicsDTO> result = await _restService.GetAllSpiritsAsync();
+            bool APISpiritsAvailible = true;
+            bool JSONSpiritsAvailible = true;
 
-
-            if (result.Count == 0)
+            List<GetSpiritBasicsDTO> APISpirits = new List<GetSpiritBasicsDTO>();
+            try
             {
-                string localFilePath = Path.Combine(FileSystem.CacheDirectory, "Spirits.json");
-                using FileStream fileStream = File.OpenRead(localFilePath);
-                var buffer = new byte[fileStream.Length];
-                await fileStream.ReadAsync(buffer, 0, buffer.Length);
-                string s = Encoding.Default.GetString(buffer);
+                APISpirits = await _restService.GetAllSpiritsAsync();
+            }catch(Exception ex)
+            {
+                APISpiritsAvailible = false;
+                await Application.Current.MainPage.DisplayAlert("Error", ex.ToString(), "OK");
 
-                result = JsonSerializer.Deserialize<List<GetSpiritBasicsDTO>>(s);
-                Spirits = result.Select(s => _mapper.Map<MapSpirit>(s)).ToList();
+            }
+            List<GetSpiritBasicsDTO> JSONSpirits = new List<GetSpiritBasicsDTO>();
+            try
+            {
+                JSONSpirits = await LoadJSONSpirits();
+            }catch (Exception ex)
+            {
+                JSONSpiritsAvailible = false;
+                await Application.Current.MainPage.DisplayAlert("Error", ex.ToString(), "OK");
 
+            }
+            List<GetSpiritBasicsDTO> resultSpiritsBasicsDTOs = new List<GetSpiritBasicsDTO>();
+
+            if(APISpiritsAvailible && JSONSpiritsAvailible)
+            {
+                foreach (var apiSpirit in APISpirits)
+                {
+                    var jsonSpirit = JSONSpirits.Where(s => s.Id == apiSpirit.Id).FirstOrDefault();
+                    if (jsonSpirit != null)
+                    {
+                        if (jsonSpirit.LastUpdated < apiSpirit.LastUpdated)
+                        {
+                            var newSpirit = await UpdateMissedSpirit(jsonSpirit);
+                        }
+                    }
+                    else
+                    {
+                        var newSpirit = await UpdateMissedSpirit(apiSpirit);
+                    }
+
+                    resultSpiritsBasicsDTOs.Add(apiSpirit);
+                }
+
+                SaveSpiritsToJson(resultSpiritsBasicsDTOs);
+            }
+            else if(JSONSpiritsAvailible)
+            {
+                resultSpiritsBasicsDTOs = JSONSpirits;
+            }else if (APISpiritsAvailible)
+            {
+                resultSpiritsBasicsDTOs = APISpirits;
+                SaveSpiritsToJson(resultSpiritsBasicsDTOs);
             }
             else
             {
-                var json = JsonSerializer.Serialize(result);
-                Console.WriteLine(json);
-                var spiritsMS = new MemoryStream();
-                var spiritsSW = new StreamWriter(spiritsMS);
-                spiritsSW.Write(json);
-                spiritsSW.Flush();
-                spiritsMS.Flush();
-                spiritsMS.Position = 0;
-
-                string localFilePath = Path.Combine(FileSystem.CacheDirectory, "Spirits.json");
-                using FileStream fileStream = File.OpenWrite(localFilePath);
-
-                await spiritsMS.CopyToAsync(fileStream);
-
-                Spirits = result.Select(s => _mapper.Map<MapSpirit>(s)).ToList();
-
-
-                foreach (var spirit in Spirits)
-                {
-                    var tspirit = await _restService.GetSpiritAsync(spirit.Id);
-
-                    MemoryStream cardImageMS = new MemoryStream(tspirit.MarkerImage);
-
-                    string localFilePath2 = Path.Combine(FileSystem.CacheDirectory, "MarkerImage_" + spirit.Id.ToString() + "_.png");
-
-                    // using Stream sourceStream = await photo.OpenReadAsync();
-                    using FileStream localFileStream = File.OpenWrite(localFilePath2);
-
-                    await cardImageMS.CopyToAsync(localFileStream);
-                }
+                throw new Exception("No sources to retrieve spirits available!");
             }
 
-
-
-
-                // save the file into local storage
-
+             Spirits = resultSpiritsBasicsDTOs.Select(s => _mapper.Map<MapSpirit>(s)).ToList();
 
         }
 
