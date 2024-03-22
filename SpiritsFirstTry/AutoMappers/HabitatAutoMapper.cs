@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using SpiritsClassLibrary.DTOs.GeoPointDTOs;
 using SpiritsClassLibrary.DTOs.HabitatDTOs;
 using SpiritsClassLibrary.Models;
+using SpiritsFirstTry.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +14,9 @@ namespace SpiritsFirstTry.AutoMappers
     class HabitatAutoMapper : Profile
     {
         public HabitatAutoMapper() {
-            CreateMap<GetHabitatDTO, Habitat>();
+            CreateMap<GetHabitatDTO, MapHabitat>();
+            CreateMap<GetGeoPointDTO, BorderPoint>();
+
         }
     }
 }

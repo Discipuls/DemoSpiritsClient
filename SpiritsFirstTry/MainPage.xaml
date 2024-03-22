@@ -6,16 +6,25 @@
 
     <Grid>
         <esri:MapView x:Name="MainMapView"/>
+        <Grid RowDefinitions="auto,*,auto">
 
-        <Image Source="search_icon.png" MaximumHeightRequest="30"
-               MaximumWidthRequest="30" VerticalOptions="Start" 
-               InputTransparent="False" HorizontalOptions="Start"
-               Margin="20">
-                  <Image.GestureRecognizers>
+
+            <Image Source="search_icon.png" MaximumHeightRequest="30"
+              MaximumWidthRequest="30" VerticalOptions="Start" 
+              InputTransparent="False" HorizontalOptions="Start"
+              Margin="20"
+                   Grid.Row="0">
+                <Image.GestureRecognizers>
                     <TapGestureRecognizer Tapped="Tap"
-                                          NumberOfTapsRequired="1" />
-              </Image.GestureRecognizers>
-        </Image>
-
+                                         NumberOfTapsRequired="1" />
+                </Image.GestureRecognizers>
+            </Image>
+            <ProgressBar 
+                x:Name="DataLoadingProgressBar"
+                IsVisible="true" Progress="0"
+                Grid.Row="2" Margin="0,0,0,25" ScaleY="5" 
+                ProgressColor="Lime"/>
+        </Grid>
     </Grid>
+ 
 </ContentPage>

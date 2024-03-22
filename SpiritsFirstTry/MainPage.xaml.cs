@@ -13,6 +13,7 @@ namespace SpiritsFirstTry
             Application.Current.UserAppTheme = AppTheme.Dark;
             BindingContext = vm;
             mainViewModel = vm;
+            vm.SetupProgressBar(this.DataLoadingProgressBar);
             vm.SetupMap(MainMapView);
         }
         public void Tap(object sender, TappedEventArgs args)

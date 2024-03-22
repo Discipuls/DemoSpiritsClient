@@ -7,6 +7,7 @@ using Esri.ArcGISRuntime.UI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,7 @@ namespace SpiritsFirstTry.ViewModels
         bool isSpiritOpend;
         [ObservableProperty]
         String ffont;
+        public Image CurrentCardImage { get; set; }
 
         public MapView mapView { get; set; }
 
@@ -34,6 +36,17 @@ namespace SpiritsFirstTry.ViewModels
         public void SetSelectedSpirit(MapSpirit spirit)
         {
             Selected = spirit;
+
+            string localFilePath = Path.Combine(FileSystem.CacheDirectory, "CardImage_" + spirit.Id.ToString() + "_.png");
+            CurrentCardImage.Source = localFilePath;
+            /*// using Stream sourceStream = await photo.OpenReadAsync();
+            using FileStream localFileStream = File.OpenRead(localFilePath);
+            CurrentCardImage = new Image
+            {
+                Source = ImageSource.FromStream(() => localFileStream)
+            };
+            CurrentCardImage.ScaleX = 1000;
+            CurrentCardImage.ScaleY = 1000;*/
         }
 
         public void SetIsSearchOpend(bool b)
@@ -155,12 +168,17 @@ namespace SpiritsFirstTry.ViewModels
                 foreach (var reg in regions)
                 {
                     reg.IsVisible = false;
+                    
                 }
                 foreach (var spirit in spiritList)
                 {
                     if (spirit.Name == s)
                     {
                         Selected = spirit;
+                        CurrentCardImage = new Image
+                        {
+                            Source = ImageSource.FromFile(Path.Combine(FileSystem.CacheDirectory, "CardImage_" + spirit.Id.ToString() + "_.png"))
+                        };
                         MapPoint mapPoint = new MapPoint(spirit.mapPoint.X, spirit.mapPoint.Y - 200000, spirit.mapPoint.SpatialReference);
                         Viewpoint viewpoint = new Viewpoint(mapPoint, 5000000);
                         await mapView.SetViewpointAsync(viewpoint, TimeSpan.FromSeconds(0.5));

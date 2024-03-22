@@ -11,6 +11,7 @@ public partial class BottomSheetView : BottomSheet
 		InitializeComponent();
 		BindingContext = vm;
 		ViewModel = vm;
+		vm.CurrentCardImage = this.CurrentCardImage;
 	}
 
     private void search_TextChanged(object sender, TextChangedEventArgs e)

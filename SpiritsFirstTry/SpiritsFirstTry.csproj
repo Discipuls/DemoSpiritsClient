@@ -57,42 +57,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiImage Remove="Resources\Images\dotnet_bot.png" />
-	</ItemGroup>
-
-	
-	<ItemGroup>
-	  <EmbeddedResource Include="Resources\Images\adnaroh.png" />
-	  <EmbeddedResource Include="Resources\Images\apivien.png" />
-	  <EmbeddedResource Include="Resources\Images\aziarnizy.png" />
-	  <EmbeddedResource Include="Resources\Images\badziulia.png" />
-	  <EmbeddedResource Include="Resources\Images\balamucien.png" />
-	  <EmbeddedResource Include="Resources\Images\chapun.png" />
-	  <EmbeddedResource Include="Resources\Images\chichitun.png" />
-	  <EmbeddedResource Include="Resources\Images\dotnet_bot.png" />
-	  <EmbeddedResource Include="Resources\Images\dziundzik.png" />
-	  <EmbeddedResource Include="Resources\Images\halyshka.png" />
-	  <EmbeddedResource Include="Resources\Images\kapialiushnik.png" />
-	  <EmbeddedResource Include="Resources\Images\kautun.png" />
-	  <EmbeddedResource Include="Resources\Images\kuka.png" />
-	  <EmbeddedResource Include="Resources\Images\kurnalia.png" />
-	  <EmbeddedResource Include="Resources\Images\liamiec.png" />
-	  <EmbeddedResource Include="Resources\Images\liasny_cmok.png" />
-	  <EmbeddedResource Include="Resources\Images\liesavaja.png" />
-	  <EmbeddedResource Include="Resources\Images\liesavik.png" />
-	  <EmbeddedResource Include="Resources\Images\lizun.png" />
-	  <EmbeddedResource Include="Resources\Images\naktyr.png" />
-	  <EmbeddedResource Include="Resources\Images\padnor.png" />
-	  <EmbeddedResource Include="Resources\Images\paraliki.png" />
-	  <EmbeddedResource Include="Resources\Images\piaczurnik.png" />
-	  <EmbeddedResource Include="Resources\Images\punnik.png" />
-	  <EmbeddedResource Include="Resources\Images\pushczavik.png" />
-	  <EmbeddedResource Include="Resources\Images\siarbaj.png" />
-	  <EmbeddedResource Include="Resources\Images\spornik.png" />
-	  <EmbeddedResource Include="Resources\Images\stryha.png" />
-	  <EmbeddedResource Include="Resources\Images\sviciazianki.png" />
-	  <EmbeddedResource Include="Resources\Images\vuzhalki.png" />
-	  <EmbeddedResource Include="Resources\Images\zazouka.png" />
+	  <None Remove="Resources\MauiImages\search_icon.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -116,6 +81,10 @@
 	  <MauiXaml Update="BottomSheetView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Resources\Images\" />
 	</ItemGroup>
 
 </Project>
