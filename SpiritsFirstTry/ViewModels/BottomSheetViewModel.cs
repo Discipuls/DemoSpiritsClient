@@ -4,6 +4,7 @@ using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Maui;
 using Esri.ArcGISRuntime.UI;
+using SpiritsFirstTry.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,8 +29,8 @@ namespace SpiritsFirstTry.ViewModels
 
         public MapView mapView { get; set; }
 
-        public List<MapSpirit> spiritList = new List<MapSpirit>();
-        public List<Graphic> regions = new List<Graphic>();
+        public List<MapSpirit> Spirits = new List<MapSpirit>();
+        public List<MapHabitat> Habitats = new List<MapHabitat>();
 
         [ObservableProperty]
         ObservableCollection<String> searchResults = new ObservableCollection<String>();
@@ -65,15 +66,8 @@ namespace SpiritsFirstTry.ViewModels
             {
                 SearchResults = new ObservableCollection<String>();
 
-                var regionsNames = new ObservableCollection<String>();
-                regionsNames.Add("Віцебская вобласць");
-                regionsNames.Add("Гомельская вобласць");
-                regionsNames.Add("Гродненская вобласць");
-                regionsNames.Add("Брэсцкая вобласць");
-                regionsNames.Add("Мінская вобласць");
-                regionsNames.Add("Магілёўская вобласць");
 
-                foreach (var spirit in spiritList)
+                foreach (var spirit in Spirits)
                 {
                     if (spirit.Name.ToLower().Contains(query))
                     {
@@ -82,69 +76,32 @@ namespace SpiritsFirstTry.ViewModels
                 }   
 
 
-                foreach (var spirit in regionsNames)
+                foreach (var habitat in Habitats)
                 {
-                    if (spirit.ToLower().Contains(query))
+                    if (habitat.Name.ToLower().Contains(query))
                     {
-                        SearchResults.Add(spirit);
+                        SearchResults.Add(habitat.Name);
                     }
                 }
             }
            
         }
         [RelayCommand]
-        async Task Tap(string s)
+        async Task Tap(string searchedName)
         {
+            MapHabitat currentHabitat = Habitats.Where(h => h.Name == searchedName).FirstOrDefault();
+           
 
-            var regionsNames = new ObservableCollection<String>();
-            regionsNames.Add("Віцебская вобласць");
-            regionsNames.Add("Гомельская вобласць");
-            regionsNames.Add("Гродненская вобласць");
-            regionsNames.Add("Брэсцкая вобласць");
-            regionsNames.Add("Мінская вобласць");
-            regionsNames.Add("Магілёўская вобласць");
-            bool tapRegion = false;
-            Graphic curRegion = new Graphic();
-
-            for (int i = 0;i < regionsNames.Count;i++)
+            if (currentHabitat != null)
             {
-                if (regionsNames[i] == s)
+                foreach (var habitat in Habitats)
                 {
-                    tapRegion = true;
-                    if(i == 0)
-                    {
-                        curRegion = regions[1];
-                    }else if (i == 1)
-                    {
-                        curRegion = regions[3];
-                    }else if (i == 2)
-                    {
-                        curRegion = regions[0];
-                    }else if (i == 3)
-                    {
-                        curRegion = regions[2];
-                    }else if (i == 4)
-                    {
-                        curRegion = regions[5];
-                    }else
-                    {
-                        curRegion = regions[4];
-                    }
-
-                    
+                    habitat.PolygonGraphic.IsVisible = false;
                 }
-
-            }
-            if (tapRegion)
-            {
-                foreach (var reg in regions)
+                currentHabitat.PolygonGraphic.IsVisible = true;
+                foreach (var spirit in Spirits)
                 {
-                    reg.IsVisible = false;
-                }
-                curRegion.IsVisible = true;
-                foreach (var spirit in spiritList)
-                {
-                    if (spirit.mapPoint.Within(curRegion.Geometry))
+                    if (spirit.mapPoint.Within(currentHabitat.PolygonGraphic.Geometry))
                     {
                         spirit.pinGraphic.IsVisible = true;
                     }
@@ -155,7 +112,7 @@ namespace SpiritsFirstTry.ViewModels
                 }
                 SearchResults = new ObservableCollection<string>();
 
-                foreach (var spirit in spiritList)
+                foreach (var spirit in Spirits)
                 {
                     if (spirit.pinGraphic.IsVisible)
                     {
@@ -165,27 +122,25 @@ namespace SpiritsFirstTry.ViewModels
             }
             else
             {
-                foreach (var reg in regions)
+                foreach (var habitat in Habitats)
                 {
-                    reg.IsVisible = false;
+                    habitat.PolygonGraphic.IsVisible = false;
                     
                 }
-                foreach (var spirit in spiritList)
+                foreach (var spirit in Spirits)
                 {
-                    if (spirit.Name == s)
+                    if (spirit.Name == searchedName)
                     {
                         Selected = spirit;
-                        CurrentCardImage = new Image
-                        {
-                            Source = ImageSource.FromFile(Path.Combine(FileSystem.CacheDirectory, "CardImage_" + spirit.Id.ToString() + "_.png"))
-                        };
+                        string localFilePath = Path.Combine(FileSystem.CacheDirectory, "CardImage_" + spirit.Id.ToString() + "_.png");
+                        CurrentCardImage.Source = localFilePath;
                         MapPoint mapPoint = new MapPoint(spirit.mapPoint.X, spirit.mapPoint.Y - 200000, spirit.mapPoint.SpatialReference);
                         Viewpoint viewpoint = new Viewpoint(mapPoint, 5000000);
                         await mapView.SetViewpointAsync(viewpoint, TimeSpan.FromSeconds(0.5));
 
 
 
-                        foreach (var sp in spiritList)
+                        foreach (var sp in Spirits)
                         {
                             sp.markerSymbol.Height = 40;
                             sp.markerSymbol.Width = 40;

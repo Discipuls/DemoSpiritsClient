@@ -3,6 +3,7 @@ using Esri.ArcGISRuntime.Maui;
 using Microsoft.Extensions.Logging;
 using SpiritsFirstTry.AutoMappers;
 using SpiritsFirstTry.Services;
+using SpiritsFirstTry.Services.Interfaces;
 using SpiritsFirstTry.ViewModels;
 using The49.Maui.BottomSheet;
 
@@ -32,6 +33,8 @@ namespace SpiritsFirstTry
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<MainViewModel>();
             builder.Services.AddSingleton<IRestService,RestService>();
+            builder.Services.AddSingleton<ISpiritService, SpiritService>();
+            builder.Services.AddSingleton<IHabitatService, HabitatService>();
 
             builder.Services.AddTransient<BottomSheetView>();
             builder.Services.AddTransient<BottomSheetViewModel>();

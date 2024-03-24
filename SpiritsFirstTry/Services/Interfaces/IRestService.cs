@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpiritsFirstTry.Services
+namespace SpiritsFirstTry.Services.Interfaces
 {
     public interface IRestService
     {

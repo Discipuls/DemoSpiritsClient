@@ -1,0 +1,110 @@
+﻿using AutoMapper;
+using Microsoft.Maui.Controls;
+using SpiritsClassLibrary.DTOs.HabitatDTOs;
+using SpiritsClassLibrary.Models;
+using SpiritsFirstTry.Models;
+using SpiritsFirstTry.Services.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+
+namespace SpiritsFirstTry.Services
+{
+    public class HabitatService : IHabitatService
+    {
+        private IMapper _mapper;
+        private IRestService _restService;
+
+
+        public HabitatService(IMapper mapper, IRestService restService) 
+        {
+            _mapper = mapper;
+            _restService = restService;
+        }
+
+        public async Task<List<MapHabitat>> LoadHabitats(ProgressBar progressBar)
+        {
+            bool APIHabitatsAvailible = true;
+            bool JSONHabitatsAvailible = true;
+            var APIHabitats = new List<GetHabitatDTO>();
+            var JSONHabitats = new List<GetHabitatDTO>();
+            try
+            {
+                APIHabitats = await _restService.GetAllHabitatsAsync();
+            }
+            catch (Exception ex)
+            {
+                APIHabitatsAvailible = false;
+                Debug.WriteLine (ex);
+            }
+
+            try
+            {
+                JSONHabitats = await LoadJSONHabitats();
+            }
+            catch (Exception ex)
+            {
+                JSONHabitatsAvailible = false;
+                Debug.WriteLine(ex);
+            }
+
+            var resultHabitatsDTOs = new List<GetHabitatDTO>();
+
+            if (APIHabitatsAvailible && JSONHabitatsAvailible)
+            {
+                resultHabitatsDTOs = APIHabitats;
+                SaveHabitatsToJson(resultHabitatsDTOs);
+            }
+            else if (JSONHabitatsAvailible)
+            {
+                resultHabitatsDTOs = JSONHabitats;
+            }
+            else if (APIHabitatsAvailible)
+            {
+                resultHabitatsDTOs = APIHabitats;
+                SaveHabitatsToJson(resultHabitatsDTOs);
+            }
+            else
+            {
+                throw new Exception("No sources to retrieve habitats available!");
+            }
+
+            var Habitats = resultHabitatsDTOs.Select(h => _mapper.Map<MapHabitat>(h)).ToList();
+            return Habitats;
+        }
+
+
+        private async Task<List<GetHabitatDTO>> LoadJSONHabitats()
+        {
+            string localFilePath = Path.Combine(FileSystem.CacheDirectory, "Habitats.json");
+            using FileStream fileStream = File.OpenRead(localFilePath);
+            var buffer = new byte[fileStream.Length];
+            await fileStream.ReadAsync(buffer, 0, buffer.Length);
+            string s = Encoding.Default.GetString(buffer);
+
+            var JSONSpirits = JsonSerializer.Deserialize<List<GetHabitatDTO>>(s);
+            return JSONSpirits;
+        }
+
+
+        private async Task SaveHabitatsToJson(List<GetHabitatDTO> habitats)
+        {
+            var json = JsonSerializer.Serialize(habitats);
+            var habitatsMS = new MemoryStream();
+            var habitatsSW = new StreamWriter(habitatsMS);
+            habitatsSW.Write(json);
+            habitatsSW.Flush();
+            habitatsMS.Position = 0;
+
+            string localFilePath = Path.Combine(FileSystem.CacheDirectory, "Habitats.json");
+            using FileStream fileStream = File.OpenWrite(localFilePath);
+
+            await habitatsMS.CopyToAsync(fileStream);
+        }
+
+    }
+}

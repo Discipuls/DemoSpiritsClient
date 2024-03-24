@@ -10,6 +10,7 @@ using SpiritsClassLibrary.DTOs;
 using SpiritsClassLibrary.Models;
 using SpiritsClassLibrary.DTOs.SpiritDTOs;
 using SpiritsClassLibrary.DTOs.HabitatDTOs;
+using SpiritsFirstTry.Services.Interfaces;
 
 namespace SpiritsFirstTry.Services
 {

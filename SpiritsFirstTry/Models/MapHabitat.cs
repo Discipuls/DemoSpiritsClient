@@ -44,7 +44,7 @@ namespace SpiritsFirstTry.Models
 
                 _polygonGraphic = new Graphic(polygon, polygonFillSymbol);
 
-                _polygonGraphic.IsVisible = true;
+                _polygonGraphic.IsVisible = false;
             }
         } 
 
