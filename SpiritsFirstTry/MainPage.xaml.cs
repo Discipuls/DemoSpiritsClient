@@ -1,4 +1,6 @@
-﻿using Esri.ArcGISRuntime.Geometry;
+﻿// Ignore Spelling: Admin
+
+using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Mapping;
 using SpiritsFirstTry.ViewModels;
 
@@ -16,10 +18,23 @@ namespace SpiritsFirstTry
             vm.SetupProgressBar(this.DataLoadingProgressBar);
             vm.SetupMap(MainMapView);
         }
-        public void Tap(object sender, TappedEventArgs args)
+        public void TapSearch(object sender, TappedEventArgs args)
         {
             mainViewModel.OpenSearch();
         }
+        public void TapAdmin(object sender, TappedEventArgs args)
+        {
+            mainViewModel.HideBottomPage();
+            //  Navigation.PushAsync(new AdminPage());
+            var navigaionParameter = new ShellNavigationQueryParameters
+            {
+                {"Spirits", mainViewModel.GetSpirits()},
+                {"Habitats", mainViewModel.GetHabitats()}
+            };
+            Shell.Current.GoToAsync("//Spirits", navigaionParameter);
+        }
+
+
 
     }
 

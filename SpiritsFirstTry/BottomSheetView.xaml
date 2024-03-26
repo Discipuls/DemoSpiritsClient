@@ -59,7 +59,7 @@
                             TextColor="#cccccc"
                             />
                         <Label 
-                        Text="{Binding Selected.HabitatsString, StringFormat='{0}'}"
+                        Text="{Binding Selected.HabitatsNames, StringFormat='{0}'}"
                         FontSize="40"
                         VerticalTextAlignment="Start"
                         HorizontalTextAlignment="Start" FontFamily="Asterlight"

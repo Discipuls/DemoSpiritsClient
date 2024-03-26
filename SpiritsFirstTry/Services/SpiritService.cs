@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SpiritsClassLibrary.DTOs.SpiritDTOs;
 using SpiritsClassLibrary.Models;
+using SpiritsFirstTry.Models;
 using SpiritsFirstTry.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace SpiritsFirstTry.Services
             _restService = restService;
         }
 
-        public async Task<List<MapSpirit>> LoadSpirits(ProgressBar progressBar)
+        public async Task<List<MapSpirit>> LoadSpirits(ProgressBar progressBar, List<MapHabitat> habitats)
         {
             bool APISpiritsAvailible = true;
             bool JSONSpiritsAvailible = true;
@@ -71,6 +72,7 @@ namespace SpiritsFirstTry.Services
                     resultSpiritsBasicsDTOs.Add(apiSpirit);
 
                     await progressBar.ProgressTo(progressBar.Progress + (0.75 / APISpirits.Count), 500, Easing.Linear);
+                    //TODO fix progress bar
                 }
 
                 SaveSpiritsToJson(resultSpiritsBasicsDTOs);
@@ -86,7 +88,7 @@ namespace SpiritsFirstTry.Services
                     await UpdateMissedSpirit(s);
 
                     await progressBar.ProgressTo(progressBar.Progress + (0.75 / APISpirits.Count), 500, Easing.Linear);
-
+                    //TODO fix progress bar
                 }
 
 
@@ -99,7 +101,53 @@ namespace SpiritsFirstTry.Services
                 throw new Exception("No sources to retrieve spirits available!");
             }
 
+            if (APISpiritsAvailible)
+            {
+                foreach(var spirit in resultSpiritsBasicsDTOs)
+                {
+                    try
+                    {
+                        string localFilePath = Path.Combine(FileSystem.CacheDirectory, "MarkerImage_" + spirit.Id.ToString() + "_.png");
+                        FileStream localFileStream = File.OpenRead(localFilePath);
+                        localFileStream.Close();
+
+                        localFilePath = Path.Combine(FileSystem.CacheDirectory, "CardImage_" + spirit.Id.ToString() + "_.png");
+                        localFileStream = File.OpenRead(localFilePath);
+                        localFileStream.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        await UpdateMissedSpirit(spirit);
+                    }
+
+                }
+            }
+
             var Spirits = resultSpiritsBasicsDTOs.Select(s => _mapper.Map<MapSpirit>(s)).ToList();
+
+            foreach(var spirit in Spirits)
+            {
+                spirit.CardImageRoute = FileSystem.CacheDirectory + "/CardImage_" + spirit.Id + "_.png";
+                spirit.MarkerImageRoute = FileSystem.CacheDirectory + "/MarkerImage_" + spirit.Id + "_.png";
+            }
+
+            foreach(var spirit in Spirits)
+            {
+                var spiritDTO = resultSpiritsBasicsDTOs.Where(s => s.Id == spirit.Id).FirstOrDefault();
+                foreach(var habitatId in spiritDTO.HabitatsIds)
+                {
+                    spirit.Habitats.Add(habitats.Where(h => h.Id == habitatId).FirstOrDefault());
+                }
+            }
+
+            foreach (var spirit in Spirits)
+            {
+                spirit.HabitatsNames = spirit.Habitats[0].Name;
+                for (int i = 1; i < spirit.Habitats.Count(); i++)
+                {
+                    spirit.HabitatsNames += ", " + spirit.Habitats[i].Name;
+                }
+            }
             return Spirits;
         }
 

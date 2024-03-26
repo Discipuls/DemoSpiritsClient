@@ -57,6 +57,14 @@ namespace SpiritsFirstTry.ViewModels
 
         }
 
+        public List<MapSpirit> GetSpirits()
+        {
+            return Spirits;
+        }
+        public List<MapHabitat> GetHabitats()
+        {
+            return Habitats;
+        }
         public void SetupMap(MapView mapView)
         {
             MainMapView = mapView;
@@ -75,15 +83,24 @@ namespace SpiritsFirstTry.ViewModels
             this.progressBar = pg;
         }
 
+        public async Task HideBottomPage()
+        {
+            if(bottomSheeet.IsLoaded) 
+            bottomSheeet.DismissAsync();
+        }
+
         private async Task Initialize()
         {
 
             try
             {
                 await progressBar.ProgressTo(0.0, 500, Easing.Linear);
-                Spirits = await _spiritService.LoadSpirits(progressBar);
-                await progressBar.ProgressTo(0.75, 500, Easing.Linear);
+
                 Habitats = await _habitatService.LoadHabitats(progressBar);
+                await progressBar.ProgressTo(0.25, 500, Easing.Linear);
+
+                Spirits = await _spiritService.LoadSpirits(progressBar, Habitats);
+
                 await progressBar.ProgressTo(1, 500, Easing.Linear);
                 progressBar.IsVisible = false;
 

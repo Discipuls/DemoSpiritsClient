@@ -35,6 +35,9 @@ namespace SpiritsFirstTry
             builder.Services.AddSingleton<IRestService,RestService>();
             builder.Services.AddSingleton<ISpiritService, SpiritService>();
             builder.Services.AddSingleton<IHabitatService, HabitatService>();
+            builder.Services.AddSingleton<AdminSpiritsViewModel>();
+            builder.Services.AddSingleton<AdminSpiritPage>();
+
 
             builder.Services.AddTransient<BottomSheetView>();
             builder.Services.AddTransient<BottomSheetViewModel>();

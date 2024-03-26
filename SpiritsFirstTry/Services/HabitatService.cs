@@ -39,7 +39,7 @@ namespace SpiritsFirstTry.Services
             catch (Exception ex)
             {
                 APIHabitatsAvailible = false;
-                Debug.WriteLine (ex);
+                
             }
 
             try
@@ -49,7 +49,6 @@ namespace SpiritsFirstTry.Services
             catch (Exception ex)
             {
                 JSONHabitatsAvailible = false;
-                Debug.WriteLine(ex);
             }
 
             var resultHabitatsDTOs = new List<GetHabitatDTO>();
@@ -86,7 +85,7 @@ namespace SpiritsFirstTry.Services
             await fileStream.ReadAsync(buffer, 0, buffer.Length);
             string s = Encoding.Default.GetString(buffer);
 
-            var JSONSpirits = JsonSerializer.Deserialize<List<GetHabitatDTO>>(s);
+            var JSONSpirits = JsonSerializer.Deserialize<List<GetHabitatDTO>>(s);//TODO rename
             return JSONSpirits;
         }
 

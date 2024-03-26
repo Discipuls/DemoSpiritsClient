@@ -2,6 +2,7 @@
 using SpiritsClassLibrary.DTOs.GeoPointDTOs;
 using SpiritsClassLibrary.DTOs.SpiritDTOs;
 using SpiritsClassLibrary.Models;
+using SpiritsFirstTry.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace SpiritsFirstTry.AutoMappers
             CreateMap<GetSpiritBasicsDTO, MapSpirit>();
             CreateMap<GetGeoPointDTO, MarkerPoint>();
             CreateMap<GetSpiritDTO, MapSpirit>();
+            CreateMap<UpdateMapSpiritDTO, MapSpirit>().ReverseMap();
+            CreateMap<UpdateSpiritDTO, UpdateMapSpiritDTO>().ReverseMap();
         }
     }
 }

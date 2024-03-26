@@ -85,6 +85,10 @@ namespace SpiritsFirstTry
         public PictureMarkerSymbol markerSymbol { get; set; }
         public Graphic pinGraphic { get; set; }
         public Graphic polygonGraphic {  get; set; }
+        public string CardImageRoute { get; set; }
+        public string MarkerImageRoute { get; set; }
+        public string HabitatsNames { get; set; }
+
 
         private MarkerPoint? _markerPoint;
         public new MarkerPoint? MarkerLocation
@@ -131,7 +135,6 @@ namespace SpiritsFirstTry
             polygonGraphic = new Graphic(mahouRivieraPolygon, polygonFillSymbol);
             polygonGraphic.IsVisible = false;
         }
-
 
     }
 }

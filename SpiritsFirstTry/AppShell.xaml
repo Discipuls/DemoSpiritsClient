@@ -10,6 +10,31 @@
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Route="MainPage" >
+        
+
+
+
+
+    </ShellContent>
+
+    
+    <TabBar
+            Route="r"
+            Title="Admin">
+
+        <Tab Route="AdminPage" >
+
+            <ShellContent Title="Spirits" Route="Spirits"
+                          ContentTemplate="{DataTemplate local:AdminSpiritPage}">
+
+            </ShellContent>
+            <ShellContent Title="Habitats">
+                <local:AdminHabitatPage/>
+            </ShellContent>
+
+        </Tab>
+    </TabBar>
+
 
 </Shell>

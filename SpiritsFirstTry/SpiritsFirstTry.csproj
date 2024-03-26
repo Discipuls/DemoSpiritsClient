@@ -57,6 +57,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\MauiImages\admin_icon.png" />
+	  <None Remove="Resources\MauiImages\pencil.png" />
+	  <None Remove="Resources\MauiImages\plus.png" />
 	  <None Remove="Resources\MauiImages\search_icon.png" />
 	</ItemGroup>
 
@@ -78,7 +81,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="AdminHabitatPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="AdminSpiritPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="BottomSheetView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="SpiritUpdatePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
@@ -86,5 +98,7 @@
 	<ItemGroup>
 	  <Folder Include="Resources\Images\" />
 	</ItemGroup>
+
+	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadGenericExceptionInfoBarSpiritsFirstTryHideInfoBar="True" /></VisualStudio></ProjectExtensions>
 
 </Project>

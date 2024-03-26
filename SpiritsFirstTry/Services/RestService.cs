@@ -18,9 +18,9 @@ namespace SpiritsFirstTry.Services
     {
         HttpClient _client;
         JsonSerializerOptions _serializerOptions;
-        string _baseUrl = "https://husky-evolved-radically.ngrok-free.app";
+        string _baseUrl = "https://heroic-naturally-reptile.ngrok-free.app";
 
-        public RestService() { 
+        public RestService() {
             _client = new HttpClient();
             _serializerOptions = new JsonSerializerOptions()
             {
@@ -31,40 +31,40 @@ namespace SpiritsFirstTry.Services
 
         public async Task CreateHabitatAsync(CreateHabitatDTO createHabitatDTO)
         {
-            throw new NotImplementedException();
+            using StringContent stringContent = new(
+                JsonSerializer.Serialize(createHabitatDTO), Encoding.UTF8, "application/json");
+            HttpResponseMessage respone = await _client.PostAsync(_baseUrl + "/Habitat", stringContent);
         }
 
         public async Task CreateSpiritAsync(CreateSpiritDTO createSpiritDTO)
         {
-            throw new NotImplementedException();
+            using StringContent stringContent = new(
+                JsonSerializer.Serialize(createSpiritDTO), Encoding.UTF8, "application/json");
+            HttpResponseMessage respone = await _client.PostAsync(_baseUrl + "/Habitat", stringContent);
         }
-
         public async Task DeleteHabitatAsync(int id)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage respone = await _client.DeleteAsync(_baseUrl + "/habitat/" + id.ToString());
         }
 
         public async Task DeleteSpiritAsync(int id)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage respone = await _client.DeleteAsync(_baseUrl + "/spirit/" + id.ToString());
         }
 
         public async Task<List<GetHabitatDTO>> GetAllHabitatsAsync()
         {
             var habitats = new List<GetHabitatDTO>();
 
-            try
+            HttpResponseMessage respone = await _client.GetAsync(_baseUrl + "/Habitat");
+            if (respone.IsSuccessStatusCode)
             {
-                HttpResponseMessage respone = await _client.GetAsync(_baseUrl + "/Habitat");
-                if (respone.IsSuccessStatusCode)
-                {
-                    string content = await respone.Content.ReadAsStringAsync();
-                    habitats = JsonSerializer.Deserialize<List<GetHabitatDTO>>(content, _serializerOptions);
-                }
+                string content = await respone.Content.ReadAsStringAsync();
+                habitats = JsonSerializer.Deserialize<List<GetHabitatDTO>>(content, _serializerOptions);
             }
-            catch (Exception ex)
+            else
             {
-                Debug.WriteLine(ex.Message);
+                throw new Exception("Spirits API unavailable");
             }
             return habitats;
         }
@@ -88,7 +88,16 @@ namespace SpiritsFirstTry.Services
 
         public async Task<GetHabitatDTO> GetHabitatAsync(int id)
         {
-            throw new NotImplementedException();
+            var habitat = new GetHabitatDTO();
+
+            HttpResponseMessage respone = await _client.GetAsync(_baseUrl + "/spirit/" + id.ToString());
+            if (respone.IsSuccessStatusCode)
+            {
+                string content = await respone.Content.ReadAsStringAsync();
+                habitat = JsonSerializer.Deserialize<GetHabitatDTO>(content, _serializerOptions);
+            }
+
+            return habitat;
         }
 
         public async Task<GetSpiritDTO> GetSpiritAsync(int id)
@@ -107,12 +116,16 @@ namespace SpiritsFirstTry.Services
 
         public async Task UpdateHabitatAsync(UpdateHabitatDTO updateHabitatDTO)
         {
-            throw new NotImplementedException();
+            using StringContent stringContent = new(
+                JsonSerializer.Serialize(updateHabitatDTO), Encoding.UTF8, "application/json");
+            HttpResponseMessage respone = await _client.PutAsync(_baseUrl + "/Habitat", stringContent);
         }
 
         public async Task UpdateSpiritAsync(UpdateSpiritDTO updateSpiritDTO)
         {
-            throw new NotImplementedException();
+            using StringContent stringContent = new(
+                JsonSerializer.Serialize(updateSpiritDTO), Encoding.UTF8, "application/json");
+            HttpResponseMessage respone = await _client.PutAsync(_baseUrl + "/Spirit", stringContent);
         }
     }
 
