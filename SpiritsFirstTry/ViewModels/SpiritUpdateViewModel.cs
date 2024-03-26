@@ -3,6 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Maui;
+using Esri.ArcGISRuntime.Symbology;
+using Esri.ArcGISRuntime.UI;
 using SpiritsClassLibrary.Models;
 using SpiritsFirstTry.DTOs;
 using SpiritsFirstTry.Models;
@@ -41,9 +43,7 @@ namespace SpiritsFirstTry.ViewModels
             SpiritMapView = mapView;
             SpiritMapView.Map = new Esri.ArcGISRuntime.Mapping.Map(BasemapStyle.OSMNavigationDark);
 
-            var MinskPoint = new MapPoint(27.542744, 53.897867, SpatialReferences.Wgs84);
-
-            SpiritMapView.Map.InitialViewpoint = new Viewpoint(MinskPoint, 10000000);
+            SpiritMapView.Map.InitialViewpoint = new Viewpoint(spiritDTO.mapPoint, 10000000);
 
             await Initialize();
         }
@@ -54,6 +54,7 @@ namespace SpiritsFirstTry.ViewModels
             try
             {
                 this.SpiritMapView.GeoViewTapped += GeoViewTapped;
+                await CreateSpiritMarker();
             }
             catch (Exception e)
             {
@@ -61,7 +62,27 @@ namespace SpiritsFirstTry.ViewModels
             }
         }
 
+        private async Task CreateSpiritMarker()
+        {
+            var SpiritsGraphicOverlay = new GraphicsOverlay();
+            GraphicsOverlayCollection overlays = SpiritMapView.GraphicsOverlays;
+            overlays.Add(SpiritsGraphicOverlay);
+            SpiritMapView.GraphicsOverlays = overlays;
 
+            string localFilePath = Path.Combine(FileSystem.CacheDirectory, "MarkerImage_" + SpiritDTO.Id.ToString() + "_.png");
+
+            using FileStream localFileStream = File.OpenRead(localFilePath);
+
+            PictureMarkerSymbol pinSymbol = await PictureMarkerSymbol.CreateAsync(localFileStream);
+            SpiritDTO.markerSymbol = pinSymbol;
+            pinSymbol.Width = 40;
+            pinSymbol.Height = 40;
+
+            Graphic pinGraphic = new Graphic(SpiritDTO.mapPoint, pinSymbol);
+            SpiritDTO.pinGraphic = pinGraphic;
+            SpiritsGraphicOverlay.Graphics.Add(pinGraphic);
+
+        }
 
         private async void GeoViewTapped(object sender, Esri.ArcGISRuntime.Maui.GeoViewInputEventArgs e)
         {
