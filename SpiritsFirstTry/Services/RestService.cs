@@ -40,7 +40,7 @@ namespace SpiritsFirstTry.Services
         {
             using StringContent stringContent = new(
                 JsonSerializer.Serialize(createSpiritDTO), Encoding.UTF8, "application/json");
-            HttpResponseMessage respone = await _client.PostAsync(_baseUrl + "/Habitat", stringContent);
+            HttpResponseMessage respone = await _client.PostAsync(_baseUrl + "/Spirit", stringContent);
         }
         public async Task DeleteHabitatAsync(int id)
         {

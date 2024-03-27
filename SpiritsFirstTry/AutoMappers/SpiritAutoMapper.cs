@@ -20,6 +20,7 @@ namespace SpiritsFirstTry.AutoMappers
             CreateMap<GetSpiritDTO, MapSpirit>();
             CreateMap<UpdateMapSpiritDTO, MapSpirit>().ReverseMap();
             CreateMap<UpdateSpiritDTO, UpdateMapSpiritDTO>().ReverseMap();
+            CreateMap<UpdateSpiritDTO, CreateSpiritDTO>(); 
         }
     }
 }

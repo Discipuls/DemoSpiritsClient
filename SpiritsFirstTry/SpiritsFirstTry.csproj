@@ -57,12 +57,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiImage Remove="Resources\Images\newspirit.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\Images\newspirit.png" />
 	  <None Remove="Resources\MauiImages\admin_icon.png" />
 	  <None Remove="Resources\MauiImages\cursor_drag.png" />
 	  <None Remove="Resources\MauiImages\hand_drag.png" />
 	  <None Remove="Resources\MauiImages\pencil.png" />
 	  <None Remove="Resources\MauiImages\plus.png" />
 	  <None Remove="Resources\MauiImages\search_icon.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\Images\newspirit.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -98,10 +107,6 @@
 	  <MauiXaml Update="SpiritUpdatePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Resources\Images\" />
 	</ItemGroup>
 
 	<ProjectExtensions><VisualStudio><UserProperties XamarinHotReloadGenericExceptionInfoBarSpiritsFirstTryHideInfoBar="True" /></VisualStudio></ProjectExtensions>

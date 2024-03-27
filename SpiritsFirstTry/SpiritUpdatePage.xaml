@@ -20,7 +20,7 @@
                            MaximumHeightRequest="100" HorizontalOptions="Start"
                            MaximumWidthRequest="100"></Image>
                 </Grid>
-                <Entry Grid.Row="1" Text="{Binding SpiritDTO.Name}" FontSize="Large"></Entry>
+                <Entry Grid.Row="1" Text="{Binding SpiritDTO.Name}" Placeholder="Уведзіце імя" FontSize="Large"></Entry>
 
                 <ListView Grid.Row="2" x:Name="TypeListView"  ItemsSource="{Binding SpiritDTO.Classification}">
                 </ListView>
@@ -40,7 +40,7 @@
                            x:Name="CardImage"></Image>
                 </Grid>
 
-                <Editor Grid.Row="5" Text="{Binding SpiritDTO.Description} " FontAutoScalingEnabled="False" AutoSize="TextChanges"></Editor>
+                <Editor Grid.Row="5" Text="{Binding SpiritDTO.Description}" Placeholder="Уведзіце апісанне" FontAutoScalingEnabled="False" AutoSize="TextChanges"></Editor>
                 <Grid Grid.Row="6">
                     <Image Source="pencil.png" ZIndex="1" MaximumHeightRequest="30"
                    VerticalOptions="Start" HorizontalOptions="End"

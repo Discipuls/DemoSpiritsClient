@@ -26,9 +26,14 @@ public partial class AdminSpiritPage : ContentPage
         viewModel.Delete(spirit);
     }
 
+    private void TapCreate(object sender, TappedEventArgs args)
+    {
+        _ = viewModel.Create();
+    }
+
     protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
-      //  this.SpiritsListView.ItemsSource = viewModel.Spirits;
+        //  this.SpiritsListView.ItemsSource = viewModel.Spirits; 
 
         base.OnNavigatedTo(args);
       //  this.SpiritsListView.ItemsSource = viewModel.Spirits;

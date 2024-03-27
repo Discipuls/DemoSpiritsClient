@@ -19,6 +19,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Net.Mime;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using The49.Maui.BottomSheet;
@@ -85,11 +86,24 @@ namespace SpiritsFirstTry.ViewModels
             overlays.Add(SpiritsGraphicOverlay);
             SpiritMapView.GraphicsOverlays = overlays;
 
-            string localFilePath = Path.Combine(FileSystem.CacheDirectory, "MarkerImage_" + SpiritDTO.Id.ToString() + "_.png");
+            string localFilePath; ;
+            FileStream localFileStream;
+            PictureMarkerSymbol pinSymbol;
 
-            using FileStream localFileStream = File.OpenRead(localFilePath);
+            if (create)
+            {
+                Assembly currentAssembly = Assembly.GetExecutingAssembly();
+                Stream resourceStream =  currentAssembly.GetManifestResourceStream( "SpiritsFirstTry.Resources.Images.newspirit.png");
+                 pinSymbol = await PictureMarkerSymbol.CreateAsync(resourceStream);
+            }
+            else
+            {
+                localFilePath = Path.Combine(FileSystem.CacheDirectory, "MarkerImage_" + SpiritDTO.Id.ToString() + "_.png");
+                localFileStream = File.OpenRead(localFilePath);
+                pinSymbol = await PictureMarkerSymbol.CreateAsync(localFileStream);
+            }
 
-            PictureMarkerSymbol pinSymbol = await PictureMarkerSymbol.CreateAsync(localFileStream);
+
             SpiritDTO.markerSymbol = pinSymbol;
             pinSymbol.Width = 40;
             pinSymbol.Height = 40;
@@ -110,46 +124,61 @@ namespace SpiritsFirstTry.ViewModels
         [RelayCommand]
         async Task Save()
         {
-            Console.WriteLine("Click save!");
-            var updateSpiritDTO = _mapper.Map<UpdateSpiritDTO>(spiritDTO);
-            foreach(var habitat in spiritDTO.HabitatsDTOs)
+            try
             {
-                updateSpiritDTO.HabitatsIds.Add(habitat.Id);
-            }
-
-            using FileStream markerFileStream = File.OpenRead(spiritDTO.MarkerImageRoute);
-            var markerBuffer = new byte[markerFileStream.Length];
-            await markerFileStream.ReadAsync(markerBuffer, 0, markerBuffer.Length);
-            updateSpiritDTO.MarkerImage = markerBuffer;
-
-            using FileStream cardFileStream = File.OpenRead(spiritDTO.CardImageRoute);
-            var cardBuffer = new byte[cardFileStream.Length];
-            await cardFileStream.ReadAsync(cardBuffer, 0, cardBuffer.Length);
-            updateSpiritDTO.CardImage = cardBuffer;
-
-            //TODO check chenges
-            //TODO add and remove classification on page
-            //TODO add and remove habitats on page
-
-            updateSpiritDTO.Classification = ClassificationPicker.Select(p => (SpiritType)p.SelectedIndex).ToList();
-            updateSpiritDTO.HabitatsIds = HabitatPicker.Select(p => habitatsDTOs[p.SelectedIndex].Id).ToList();
-            updateSpiritDTO.MarkerLocation.Longitude = ((MapPoint)GeometryEngine.Project(spiritDTO.mapPoint, SpatialReferences.Wgs84)).Y;
-            updateSpiritDTO.MarkerLocation.Latitude = ((MapPoint)GeometryEngine.Project(spiritDTO.mapPoint, SpatialReferences.Wgs84)).X;
-
-            await _restService.UpdateSpiritAsync(updateSpiritDTO);
-
-
-            var imageManagerDiskCache = Path.Combine(FileSystem.CacheDirectory, "image_manager_disk_cache");
-
-            if (Directory.Exists(imageManagerDiskCache))
-            {
-                foreach (var imageCacheFile in Directory.EnumerateFiles(imageManagerDiskCache))
+                Console.WriteLine("Click save!");
+                var updateSpiritDTO = _mapper.Map<UpdateSpiritDTO>(spiritDTO);
+                foreach (var habitat in spiritDTO.HabitatsDTOs)
                 {
-                    Debug.WriteLine($"Deleting {imageCacheFile}");
-                    File.Delete(imageCacheFile);
+                    updateSpiritDTO.HabitatsIds.Add(habitat.Id);
                 }
+
+                using FileStream markerFileStream = File.OpenRead(spiritDTO.MarkerImageRoute);
+                var markerBuffer = new byte[markerFileStream.Length];
+                await markerFileStream.ReadAsync(markerBuffer, 0, markerBuffer.Length);
+                updateSpiritDTO.MarkerImage = markerBuffer;
+
+                using FileStream cardFileStream = File.OpenRead(spiritDTO.CardImageRoute);
+                var cardBuffer = new byte[cardFileStream.Length];
+                await cardFileStream.ReadAsync(cardBuffer, 0, cardBuffer.Length);
+                updateSpiritDTO.CardImage = cardBuffer;
+
+                //TODO check chenges
+                //TODO add and remove classification on page
+                //TODO add and remove habitats on page
+
+                updateSpiritDTO.Classification = ClassificationPicker.Select(p => (SpiritType)p.SelectedIndex).ToList();
+                updateSpiritDTO.HabitatsIds = HabitatPicker.Select(p => habitatsDTOs[p.SelectedIndex].Id).ToList();
+                updateSpiritDTO.MarkerLocation.Longitude = ((MapPoint)GeometryEngine.Project(spiritDTO.mapPoint, SpatialReferences.Wgs84)).Y;
+                updateSpiritDTO.MarkerLocation.Latitude = ((MapPoint)GeometryEngine.Project(spiritDTO.mapPoint, SpatialReferences.Wgs84)).X;
+
+                if (!create)
+                {
+                    await _restService.UpdateSpiritAsync(updateSpiritDTO);
+                }
+                else
+                {
+                    var createSpiritDTO = _mapper.Map<CreateSpiritDTO>(updateSpiritDTO);
+                    await _restService.CreateSpiritAsync(createSpiritDTO);
+                }
+
+
+                var imageManagerDiskCache = Path.Combine(FileSystem.CacheDirectory, "image_manager_disk_cache");
+
+                if (Directory.Exists(imageManagerDiskCache))
+                {
+                    foreach (var imageCacheFile in Directory.EnumerateFiles(imageManagerDiskCache))
+                    {
+                        Debug.WriteLine($"Deleting {imageCacheFile}");
+                        File.Delete(imageCacheFile);
+                    }
+                }
+                await Application.Current.MainPage.Navigation.PopAsync();
             }
-            await Application.Current.MainPage.Navigation.PopAsync();
+            catch(Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Smth went wrong", ex.Message, "Ok");
+            }
         }
 
         public async Task EditMarkerImage(Image markerImage)

@@ -8,10 +8,8 @@
              Shell.NavBarIsVisible="False">
 
     <Grid>
-        <Image Source="plus.png" MaximumHeightRequest="60" MaximumWidthRequest="60" HorizontalOptions="End" VerticalOptions="End" Margin="0,0,20,20"/>
-        <Grid RowDefinitions="auto,*">
-            <Label Text="{Binding LocalFilePath, StringFormat='{0}/MarkerImage_17_.png'}" Grid.Column="1"></Label>
 
+        <Grid RowDefinitions="auto,*">
             <SearchBar Grid.Row="0" Margin="10"></SearchBar>
             <ListView x:Name="SpiritsListView" Grid.Row="1" ItemsSource="{Binding Spirits}">
                 <ListView.ItemTemplate >
@@ -36,6 +34,13 @@
             </ListView>
 
         </Grid>
+        <Image Source="plus.png" MaximumHeightRequest="60" MaximumWidthRequest="60" HorizontalOptions="End"
+               VerticalOptions="End" Margin="0,0,20,20">
+            <Image.GestureRecognizers>
+                <TapGestureRecognizer Tapped="TapCreate"
+                                         NumberOfTapsRequired="1" />
+            </Image.GestureRecognizers>
+        </Image>
     </Grid>
 
 </ContentPage>
