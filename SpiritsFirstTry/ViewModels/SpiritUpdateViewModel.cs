@@ -136,7 +136,7 @@ namespace SpiritsFirstTry.ViewModels
             updateSpiritDTO.MarkerLocation.Longitude = ((MapPoint)GeometryEngine.Project(spiritDTO.mapPoint, SpatialReferences.Wgs84)).Y;
             updateSpiritDTO.MarkerLocation.Latitude = ((MapPoint)GeometryEngine.Project(spiritDTO.mapPoint, SpatialReferences.Wgs84)).X;
 
-           // await _restService.UpdateSpiritAsync(updateSpiritDTO);
+            await _restService.UpdateSpiritAsync(updateSpiritDTO);
 
 
             var imageManagerDiskCache = Path.Combine(FileSystem.CacheDirectory, "image_manager_disk_cache");

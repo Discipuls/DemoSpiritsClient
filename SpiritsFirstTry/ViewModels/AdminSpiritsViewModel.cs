@@ -54,7 +54,6 @@ namespace SpiritsFirstTry.ViewModels
             viewModel.HabitatsDTOs = Habitats.Select( h=> _mapper.Map<UpdateHabitatMapDTO>(h)).ToList();
             viewModel.SpiritDTO.HabitatsDTOs 
                 = viewModel.SpiritDTO.Habitats.Select(h => _mapper.Map<UpdateHabitatMapDTO>(h)).ToList();
-            
             foreach(var habitatDTO in viewModel.SpiritDTO.HabitatsDTOs) 
             {
                 habitatDTO.index = viewModel.HabitatsDTOs.FindIndex(0,(h => h.Id == habitatDTO.Id));
