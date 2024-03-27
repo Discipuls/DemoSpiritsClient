@@ -228,6 +228,7 @@ namespace SpiritsFirstTry.ViewModels
                 using FileStream localFileStream = File.OpenRead(localFilePath);
 
                 PictureMarkerSymbol pinSymbol = await PictureMarkerSymbol.CreateAsync(localFileStream);
+                localFileStream.Close();
                 spirit.markerSymbol = pinSymbol;
                 pinSymbol.Width = 40;
                 pinSymbol.Height = 40;

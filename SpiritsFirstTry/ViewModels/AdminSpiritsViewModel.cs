@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SpiritsClassLibrary.DTOs.SpiritDTOs;
+using SpiritsFirstTry.AutoMappers;
 using SpiritsFirstTry.DTOs;
 using SpiritsFirstTry.Models;
 using SpiritsFirstTry.Services.Interfaces;
@@ -45,17 +47,21 @@ namespace SpiritsFirstTry.ViewModels
         [RelayCommand]
         public async Task Edit(MapSpirit spirit)
         {
-            SpiritUpdateViewModel viewModel = new SpiritUpdateViewModel();
+            UpdateSpiritDTO updateSpiritDTO = new UpdateSpiritDTO();
+            SpiritUpdateViewModel viewModel = new SpiritUpdateViewModel(_mapper, _restService);
             viewModel.SpiritDTO = _mapper.Map<UpdateMapSpiritDTO>(spirit);
             viewModel.Habitats = habitats;
             viewModel.HabitatsDTOs = Habitats.Select( h=> _mapper.Map<UpdateHabitatMapDTO>(h)).ToList();
             viewModel.SpiritDTO.HabitatsDTOs 
                 = viewModel.SpiritDTO.Habitats.Select(h => _mapper.Map<UpdateHabitatMapDTO>(h)).ToList();
-            foreach(var habitatDTO in viewModel.SpiritDTO.HabitatsDTOs)
+            
+            foreach(var habitatDTO in viewModel.SpiritDTO.HabitatsDTOs) 
             {
                 habitatDTO.index = viewModel.HabitatsDTOs.FindIndex(0,(h => h.Id == habitatDTO.Id));
             }
             await Application.Current.MainPage.Navigation.PushAsync(new SpiritUpdatePage(viewModel));
+
+            Console.WriteLine();
         }
     }
 }

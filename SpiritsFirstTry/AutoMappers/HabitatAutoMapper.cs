@@ -18,6 +18,7 @@ namespace SpiritsFirstTry.AutoMappers
             CreateMap<GetHabitatDTO, MapHabitat>();
             CreateMap<GetGeoPointDTO, BorderPoint>();
             CreateMap<CreateGeoPointDTO, BorderPoint>().ReverseMap();
+            CreateMap<CreateGeoPointDTO, MarkerPoint>().ReverseMap();
             CreateMap<UpdateHabitatMapDTO, MapHabitat>().ReverseMap();
             CreateMap<UpdateHabitatDTO, UpdateHabitatMapDTO>().ReverseMap();
 

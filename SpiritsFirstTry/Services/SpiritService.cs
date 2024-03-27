@@ -187,11 +187,14 @@ namespace SpiritsFirstTry.Services
             string markerFilePath = Path.Combine(FileSystem.CacheDirectory, "MarkerImage_" + spirit.Id.ToString() + "_.png");
             using FileStream markerFileStream = File.OpenWrite(markerFilePath);
             await markerImageMS.CopyToAsync(markerFileStream);
+            markerFileStream.Close();
 
             MemoryStream cardImageMS = new MemoryStream(spirit.CardImage);
             string cardFilePath = Path.Combine(FileSystem.CacheDirectory, "CardImage_" + spirit.Id.ToString() + "_.png");
             using FileStream cardFileStream = File.OpenWrite(cardFilePath);
             await cardImageMS.CopyToAsync(cardFileStream);
+            cardFileStream.Close();
+
 
             return spirit;
         }

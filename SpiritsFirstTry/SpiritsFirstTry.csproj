@@ -58,6 +58,8 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\MauiImages\admin_icon.png" />
+	  <None Remove="Resources\MauiImages\cursor_drag.png" />
+	  <None Remove="Resources\MauiImages\hand_drag.png" />
 	  <None Remove="Resources\MauiImages\pencil.png" />
 	  <None Remove="Resources\MauiImages\plus.png" />
 	  <None Remove="Resources\MauiImages\search_icon.png" />
@@ -88,6 +90,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="BottomSheetView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="EditMarkerPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="SpiritUpdatePage.xaml">

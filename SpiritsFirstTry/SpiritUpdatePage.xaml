@@ -10,8 +10,15 @@
             <Grid RowDefinitions="auto, auto, auto, auto, auto,auto, 300" Padding="20" RowSpacing="20">
                 <Grid Grid.Row="0" ColumnDefinitions="auto,auto">
                     <Image Grid.Column="1" Source="pencil.png" ZIndex="1" MaximumHeightRequest="30" 
-                   VerticalOptions="Start" HorizontalOptions="Start"></Image>
-                    <Image Grid.Column="0" Source="{Binding SpiritDTO.MarkerImageRoute}" MaximumHeightRequest="100" HorizontalOptions="Start"></Image>
+                   VerticalOptions="Start" HorizontalOptions="Start">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapEditMarkerImage"
+                                         NumberOfTapsRequired="1" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Image x:Name="markerImage" Grid.Column="0"  Source="{Binding SpiritDTO.MarkerImageRoute}"
+                           MaximumHeightRequest="100" HorizontalOptions="Start"
+                           MaximumWidthRequest="100"></Image>
                 </Grid>
                 <Entry Grid.Row="1" Text="{Binding SpiritDTO.Name}" FontSize="Large"></Entry>
 
@@ -22,15 +29,27 @@
                 </ListView>
                 <Grid  Grid.Row="4" ColumnDefinitions="auto,auto">
                     <Image Grid.Column="1" Source="pencil.png" ZIndex="1" MaximumHeightRequest="50" 
-                   VerticalOptions="Start" HorizontalOptions="End"></Image>
-                    <Image Grid.Column="0" Source="{Binding SpiritDTO.CardImageRoute}" MaximumHeightRequest="300"></Image>
+                   VerticalOptions="Start" HorizontalOptions="End">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapEditCardImage"
+                                         NumberOfTapsRequired="1" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Image Grid.Column="0" Source="{Binding SpiritDTO.CardImageRoute}" MaximumHeightRequest="300"
+                           MaximumWidthRequest="300"
+                           x:Name="CardImage"></Image>
                 </Grid>
 
                 <Editor Grid.Row="5" Text="{Binding SpiritDTO.Description} " FontAutoScalingEnabled="False" AutoSize="TextChanges"></Editor>
                 <Grid Grid.Row="6">
                     <Image Source="pencil.png" ZIndex="1" MaximumHeightRequest="30"
                    VerticalOptions="Start" HorizontalOptions="End"
-                   Margin="10"></Image>
+                   Margin="10">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapEditMarker"
+                                         NumberOfTapsRequired="1" />
+                        </Image.GestureRecognizers>
+                    </Image>
                     <esri:MapView x:Name="MainMapView"/>
                 </Grid>
             </Grid>
