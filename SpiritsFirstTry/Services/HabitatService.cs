@@ -18,6 +18,7 @@ namespace SpiritsFirstTry.Services
     {
         private IMapper _mapper;
         private IRestService _restService;
+        private string dataDirectory;
 
 
         public HabitatService(IMapper mapper, IRestService restService) 
@@ -28,6 +29,7 @@ namespace SpiritsFirstTry.Services
 
         public async Task<List<MapHabitat>> LoadHabitats(ProgressBar progressBar)
         {
+            dataDirectory = FileSystem.AppDataDirectory;
             bool APIHabitatsAvailible = true;
             bool JSONHabitatsAvailible = true;
             var APIHabitats = new List<GetHabitatDTO>();
@@ -79,7 +81,7 @@ namespace SpiritsFirstTry.Services
 
         private async Task<List<GetHabitatDTO>> LoadJSONHabitats()
         {
-            string localFilePath = Path.Combine(FileSystem.CacheDirectory, "Habitats.json");
+            string localFilePath = Path.Combine(dataDirectory, "Habitats.json");
             using FileStream fileStream = File.OpenRead(localFilePath);
             var buffer = new byte[fileStream.Length];
             await fileStream.ReadAsync(buffer, 0, buffer.Length);
@@ -99,7 +101,7 @@ namespace SpiritsFirstTry.Services
             habitatsSW.Flush();
             habitatsMS.Position = 0;
 
-            string localFilePath = Path.Combine(FileSystem.CacheDirectory, "Habitats.json");
+            string localFilePath = Path.Combine(dataDirectory, "Habitats.json");
             using FileStream fileStream = File.OpenWrite(localFilePath);
 
             await habitatsMS.CopyToAsync(fileStream);

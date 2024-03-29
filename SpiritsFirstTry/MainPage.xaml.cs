@@ -31,6 +31,7 @@ namespace SpiritsFirstTry
                 {"Spirits", mainViewModel.GetSpirits()},
                 {"Habitats", mainViewModel.GetHabitats()}
             };
+            Shell.Current.GoToAsync("//Habitats", navigaionParameter);
             Shell.Current.GoToAsync("//Spirits", navigaionParameter);
         }
 

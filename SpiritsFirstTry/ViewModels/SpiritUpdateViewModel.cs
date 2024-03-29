@@ -40,6 +40,8 @@ namespace SpiritsFirstTry.ViewModels
         List<UpdateHabitatMapDTO> habitatsDTOs = new List<UpdateHabitatMapDTO>();
         public bool create = false;
 
+        private string dataDirectory;
+
 
         public List<Picker> ClassificationPicker { get; set; } = new List<Picker>();
         public List<Picker> HabitatPicker { get; set; } = new List<Picker>();
@@ -47,6 +49,7 @@ namespace SpiritsFirstTry.ViewModels
         public MapView SpiritMapView { get; set; }
         public SpiritUpdateViewModel(IMapper mapper, IRestService restService)
         {
+            dataDirectory = FileSystem.AppDataDirectory;
             var t =  Enum.GetValues(typeof(SpiritType));
             foreach(int i in t)
             {
@@ -98,7 +101,7 @@ namespace SpiritsFirstTry.ViewModels
             }
             else
             {
-                localFilePath = Path.Combine(FileSystem.CacheDirectory, "MarkerImage_" + SpiritDTO.Id.ToString() + "_.png");
+                localFilePath = Path.Combine(dataDirectory, "MarkerImage_" + SpiritDTO.Id.ToString() + "_.png");
                 localFileStream = File.OpenRead(localFilePath);
                 pinSymbol = await PictureMarkerSymbol.CreateAsync(localFileStream);
             }
@@ -213,7 +216,7 @@ namespace SpiritsFirstTry.ViewModels
         public async Task EditCardImage(Image cardImage)
         {
 
-            var result = await MediaPicker.PickPhotoAsync();
+            var result = await MediaPicker.PickPhotoAsync(); 
             if (result.ContentType != "image/png")
             {
                 await Application.Current.MainPage.DisplayAlert("Error", "Please select .png image", "OK");

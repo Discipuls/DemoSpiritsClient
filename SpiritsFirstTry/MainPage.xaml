@@ -6,6 +6,7 @@
 
     <Grid>
         <esri:MapView x:Name="MainMapView"/>
+
         <Grid RowDefinitions="auto,*,auto">
 
 
@@ -22,7 +23,7 @@
             <Image Source="admin_icon.png" MaximumHeightRequest="30"
               MaximumWidthRequest="30" VerticalOptions="Start" 
               InputTransparent="False" HorizontalOptions="End"
-              Margin="20" 
+              Margin="30" 
                    Grid.Row="0">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Tapped="TapAdmin"

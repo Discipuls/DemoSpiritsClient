@@ -30,7 +30,7 @@ namespace SpiritsFirstTry.ViewModels
         List<MapHabitat> habitats = new List<MapHabitat>();
 
         public AdminSpiritsViewModel(IRestService restService, IMapper mapper) { 
-            cacheDirectory = FileSystem.CacheDirectory;
+            cacheDirectory = FileSystem.AppDataDirectory;
             _restService = restService;
             _mapper = mapper;
         }
@@ -38,7 +38,7 @@ namespace SpiritsFirstTry.ViewModels
         [RelayCommand]
         public async Task Delete(MapSpirit spirit)
         {
-            var answer =  await Application.Current.MainPage.DisplayAlert("Delete", $"Are you sure you want delete {spirit.Name}?", "Delete", "Cancel");
+            var answer =  await Application.Current.MainPage.DisplayAlert("Delete", $"Are you sure you want to delete {spirit.Name}?", "Delete", "Cancel");
             if (answer)
             {
                 _restService.DeleteSpiritAsync(spirit.Id);

@@ -104,6 +104,9 @@
 	  <MauiXaml Update="EditMarkerPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="HabitatUpdatePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="SpiritUpdatePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

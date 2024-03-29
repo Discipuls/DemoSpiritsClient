@@ -39,6 +39,7 @@ namespace SpiritsFirstTry.ViewModels
         BottomSheetView bottomSheeet;
         BottomSheetViewModel bottomSheeetVm;
         public GraphicsOverlay polygonOverlay;
+        private string dataDirectory;
 
 
         public MainViewModel(ISpiritService spiritService, IHabitatService habitatService) {
@@ -52,7 +53,7 @@ namespace SpiritsFirstTry.ViewModels
             bottomSheeet.IsCancelable = false;
             bottomSheeet.Detents.Add(new MediumDetent());
             bottomSheeet.Detents.Add(new FullscreenDetent());
-
+            dataDirectory = FileSystem.AppDataDirectory;
             //     bottomSheeet.SelectedDetent = bottomSheeet.Detents[2];
 
         }
@@ -219,11 +220,9 @@ namespace SpiritsFirstTry.ViewModels
 
             MainMapView.GraphicsOverlays = overlays;
 
-            Assembly currentAssembly = Assembly.GetExecutingAssembly();
-
             foreach (var spirit in Spirits)
             {
-                string localFilePath = Path.Combine(FileSystem.CacheDirectory, "MarkerImage_" + spirit.Id.ToString() + "_.png");
+                string localFilePath = Path.Combine(dataDirectory, "MarkerImage_" + spirit.Id.ToString() + "_.png");
 
                 using FileStream localFileStream = File.OpenRead(localFilePath);
 

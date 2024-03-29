@@ -18,6 +18,8 @@ namespace SpiritsFirstTry.Services
         private IMapper _mapper;
         private IRestService _restService;
 
+        string dataDirectory;
+
         public SpiritService(IMapper mapper, IRestService restService) { 
             _mapper = mapper;
             _restService = restService;
@@ -25,6 +27,7 @@ namespace SpiritsFirstTry.Services
 
         public async Task<List<MapSpirit>> LoadSpirits(ProgressBar progressBar, List<MapHabitat> habitats)
         {
+            dataDirectory = FileSystem.AppDataDirectory;
             bool APISpiritsAvailible = true;
             bool JSONSpiritsAvailible = true;
 
@@ -48,6 +51,8 @@ namespace SpiritsFirstTry.Services
             {
                 JSONSpiritsAvailible = false;
                 Debug.WriteLine(ex.Message);
+                Application.Current.MainPage.DisplayAlert("Exception", ex.Message, "Ok");
+
 
             }
             List<GetSpiritBasicsDTO> resultSpiritsBasicsDTOs = new List<GetSpiritBasicsDTO>();
@@ -107,16 +112,17 @@ namespace SpiritsFirstTry.Services
                 {
                     try
                     {
-                        string localFilePath = Path.Combine(FileSystem.CacheDirectory, "MarkerImage_" + spirit.Id.ToString() + "_.png");
+                        string localFilePath = Path.Combine(dataDirectory, "MarkerImage_" + spirit.Id.ToString() + "_.png");
                         FileStream localFileStream = File.OpenRead(localFilePath);
                         localFileStream.Close();
 
-                        localFilePath = Path.Combine(FileSystem.CacheDirectory, "CardImage_" + spirit.Id.ToString() + "_.png");
+                        localFilePath = Path.Combine(dataDirectory, "CardImage_" + spirit.Id.ToString() + "_.png");
                         localFileStream = File.OpenRead(localFilePath);
                         localFileStream.Close();
                     }
                     catch (Exception ex)
                     {
+                        Application.Current.MainPage.DisplayAlert("Exception", ex.Message, "Ok");
                         await UpdateMissedSpirit(spirit);
                     }
 
@@ -127,8 +133,8 @@ namespace SpiritsFirstTry.Services
 
             foreach(var spirit in Spirits)
             {
-                spirit.CardImageRoute = FileSystem.CacheDirectory + "/CardImage_" + spirit.Id + "_.png";
-                spirit.MarkerImageRoute = FileSystem.CacheDirectory + "/MarkerImage_" + spirit.Id + "_.png";
+                spirit.CardImageRoute = dataDirectory + "/CardImage_" + spirit.Id + "_.png";
+                spirit.MarkerImageRoute = dataDirectory + "/MarkerImage_" + spirit.Id + "_.png";
             }
 
             foreach(var spirit in Spirits)
@@ -154,7 +160,7 @@ namespace SpiritsFirstTry.Services
 
         private async Task<List<GetSpiritBasicsDTO>> LoadJSONSpirits()
         {
-            string localFilePath = Path.Combine(FileSystem.CacheDirectory, "Spirits.json");
+            string localFilePath = Path.Combine(dataDirectory, "Spirits.json");
             using FileStream fileStream = File.OpenRead(localFilePath);
             var buffer = new byte[fileStream.Length];
             await fileStream.ReadAsync(buffer, 0, buffer.Length);
@@ -173,7 +179,7 @@ namespace SpiritsFirstTry.Services
             spiritsSW.Flush();
             spiritsMS.Position = 0;
 
-            string localFilePath = Path.Combine(FileSystem.CacheDirectory, "Spirits.json");
+            string localFilePath = Path.Combine(dataDirectory, "Spirits.json");
             using FileStream fileStream = File.OpenWrite(localFilePath);
 
             await spiritsMS.CopyToAsync(fileStream);
@@ -184,13 +190,13 @@ namespace SpiritsFirstTry.Services
             var spirit = await _restService.GetSpiritAsync(spiritBasicsDTO.Id);
 
             MemoryStream markerImageMS = new MemoryStream(spirit.MarkerImage);
-            string markerFilePath = Path.Combine(FileSystem.CacheDirectory, "MarkerImage_" + spirit.Id.ToString() + "_.png");
+            string markerFilePath = Path.Combine(dataDirectory, "MarkerImage_" + spirit.Id.ToString() + "_.png");
             using FileStream markerFileStream = File.OpenWrite(markerFilePath);
             await markerImageMS.CopyToAsync(markerFileStream);
             markerFileStream.Close();
 
             MemoryStream cardImageMS = new MemoryStream(spirit.CardImage);
-            string cardFilePath = Path.Combine(FileSystem.CacheDirectory, "CardImage_" + spirit.Id.ToString() + "_.png");
+            string cardFilePath = Path.Combine(dataDirectory, "CardImage_" + spirit.Id.ToString() + "_.png");
             using FileStream cardFileStream = File.OpenWrite(cardFilePath);
             await cardImageMS.CopyToAsync(cardFileStream);
             cardFileStream.Close();

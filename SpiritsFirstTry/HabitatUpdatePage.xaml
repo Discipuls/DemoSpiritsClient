@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+             x:Class="SpiritsFirstTry.HabitatUpdatePage"
+             Title="HabitatUpdatePage">
+    <Grid RowDefinitions="*, auto" ColumnDefinitions="*, auto">
+        <Grid Grid.RowSpan="2" Grid.ColumnSpan="2" RowDefinitions="auto,*">
+            <Grid Grid.Row="0" Padding="15">
+                <Entry Text="{Binding HabitatMapDTO.Name}" FontSize="Large"></Entry>
+            </Grid>
+            <Grid Grid.Row="1">
+                <esri:MapView x:Name="HabitatMapView"/>
+                <Grid ColumnDefinitions="*,auto,auto,auto,auto,*" RowDefinitions="auto, *" ColumnSpacing="10">
+                    <Button Text="Undo"
+                                 FontSize="Body" CharacterSpacing="1"
+                                Command="{Binding UndoCommand}"
+                                Grid.Column="1" Grid.Row="0"
+                                ></Button>                        
+                    <Button Text="Redo"
+                                 FontSize="Body" CharacterSpacing="1"
+                                Command="{Binding RedoCommand}"
+                                Grid.Column="2" Grid.Row="0"
+                                ></Button>                        
+                    <Button Text="Edit"
+                                 FontSize="Body" CharacterSpacing="1"
+                                Command="{Binding EditHabitatCommand}"
+                                Grid.Column="3" Grid.Row="0"
+                                ></Button>
+                    
+                    <Button  Grid.Column="4"  Grid.Row="0" Text="Complete"
+                                FontSize="Body" CharacterSpacing="1"
+                                Command="{Binding CompleteCommand}" ></Button>
+
+                </Grid>
+            </Grid>
+        </Grid>
+            <Button Grid.Row="1" Grid.Column="1" Text="Save"
+                Margin="15" FontSize="Title" CharacterSpacing="1"
+                Command="{Binding SaveCommand}"></Button>
+
+    </Grid>
+
+    
+</ContentPage>

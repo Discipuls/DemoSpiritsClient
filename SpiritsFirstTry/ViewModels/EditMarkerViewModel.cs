@@ -23,6 +23,12 @@ namespace SpiritsFirstTry.ViewModels
         public MapView MarkerMapView { get; set; }
         public MapAction mapAction { get; set; }
         public MapView spiritMapView {get;set ;}
+        public string dataDirectory;
+
+        public EditMarkerViewModel()
+        {
+            dataDirectory = FileSystem.AppDataDirectory;
+        }
 
         public async Task SetupMap(MapView mapView)
         {
@@ -42,7 +48,7 @@ namespace SpiritsFirstTry.ViewModels
             overlays.Add(SpiritsGraphicOverlay);
             MarkerMapView.GraphicsOverlays = overlays;
 
-            string localFilePath = System.IO.Path.Combine(FileSystem.CacheDirectory, "MarkerImage_" + SpiritDTO.Id.ToString() + "_.png");
+            string localFilePath = System.IO.Path.Combine(dataDirectory, "MarkerImage_" + SpiritDTO.Id.ToString() + "_.png");
 
             using FileStream localFileStream = File.OpenRead(localFilePath);
 
@@ -70,10 +76,18 @@ namespace SpiritsFirstTry.ViewModels
         [RelayCommand]
         public async Task Complete()
         {
-            MarkerMapView.SketchEditor.CompleteCommand.Execute(this);
-            
-            Viewpoint viewpoint = new Viewpoint(SpiritDTO.pinGraphic.Geometry, spiritMapView.Scale);
-            await spiritMapView.SetViewpointAsync(viewpoint);
+            try
+            {
+                MarkerMapView.SketchEditor.CompleteCommand.Execute(this);
+
+                Viewpoint viewpoint = new Viewpoint(SpiritDTO.pinGraphic.Geometry, spiritMapView.Scale);
+                await spiritMapView.SetViewpointAsync(viewpoint);
+            }
+            catch
+            {
+                
+            }
+
         }
     }
 }

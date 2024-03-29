@@ -29,8 +29,8 @@
                           ContentTemplate="{DataTemplate local:AdminSpiritPage}">
 
             </ShellContent>
-            <ShellContent Title="Habitats">
-                <local:AdminHabitatPage/>
+            <ShellContent Title="Habitats" Route="Habitats"
+                           ContentTemplate="{DataTemplate local:AdminHabitatPage}">
             </ShellContent>
 
         </Tab>
