@@ -235,18 +235,13 @@ namespace SpiritsFirstTry.ViewModels
                 Graphic pinGraphic = new Graphic(spirit.mapPoint, pinSymbol);
                 spirit.pinGraphic = pinGraphic;
                 MapSpirit.maxzindex = Math.Max(pinGraphic.ZIndex, MapSpirit.maxzindex);
-                foreach(var habitat in Habitats)
+
+                try {
+                    spirit.polygonGraphic = Habitats.Where(h => h.Id == spirit.Habitats[0].Id).First().PolygonGraphic;
+                }
+                catch
                 {
-                    habitat.PolygonGraphic.Geometry = habitat.PolygonGraphic.Geometry.Project(spirit.mapPoint.SpatialReference);
-                    if (spirit.mapPoint.Within(habitat.PolygonGraphic.Geometry))
-                    {
-                        spirit.polygonGraphic = habitat.PolygonGraphic;
-                        break;
-                    }
-                    else
-                    {
-                        spirit.polygonGraphic = new Graphic();
-                    }
+                    spirit.polygonGraphic = new Graphic();
                 }
                 SpiritsGraphicOverlay.Graphics.Add(pinGraphic);
             }

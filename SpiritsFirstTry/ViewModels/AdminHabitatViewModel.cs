@@ -47,6 +47,15 @@ namespace SpiritsFirstTry.ViewModels
                 Habitats.Remove(habitat);
             }
         }
+
+        public async Task Create()
+        {
+            HabitatUpdateViewModel viewModel = new HabitatUpdateViewModel(_mapper, _restService);
+            viewModel.HabitatMapDTO = new UpdateHabitatMapDTO();
+            viewModel.create = true;
+            await Application.Current.MainPage.Navigation.PushAsync(new HabitatUpdatePage(viewModel));
+
+        }
     }
 
 

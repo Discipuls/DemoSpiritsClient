@@ -11,7 +11,8 @@
             </Grid>
             <Grid Grid.Row="1">
                 <esri:MapView x:Name="HabitatMapView"/>
-                <Grid ColumnDefinitions="*,auto,auto,auto,auto,*" RowDefinitions="auto, *" ColumnSpacing="10">
+                <Grid ColumnDefinitions="*,auto,auto,auto,auto,*" RowDefinitions="auto, auto, *" ColumnSpacing="10"
+                      RowSpacing="10">
                     <Button Text="Undo"
                                  FontSize="Body" CharacterSpacing="1"
                                 Command="{Binding UndoCommand}"
@@ -31,6 +32,9 @@
                     <Button  Grid.Column="4"  Grid.Row="0" Text="Complete"
                                 FontSize="Body" CharacterSpacing="1"
                                 Command="{Binding CompleteCommand}" ></Button>
+                    <Button  Grid.Column="1"  Grid.Row="1" Text="Delete selected"
+                                FontSize="Body" CharacterSpacing="1"
+                                Command="{Binding DeleteSelectedCommand}" ></Button>
 
                 </Grid>
             </Grid>

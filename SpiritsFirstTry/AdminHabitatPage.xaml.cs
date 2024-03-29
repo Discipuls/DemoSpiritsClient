@@ -24,7 +24,7 @@ public partial class AdminHabitatPage : ContentPage
 
     private void TapCreate(object sender, TappedEventArgs args)
     {
-       // _ = viewModel.Create();
+        _ = viewModel.Create();
     }
 
 }
