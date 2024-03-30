@@ -110,6 +110,7 @@ namespace SpiritsFirstTry.ViewModels
             try
             {
                 HabitatMapView.GeometryEditor.Start(habitatGraphic.Geometry);
+                HabitatMapView.GeometryEditor.Tool.Style.Opacity = 0.6;
             }
             catch
             {
