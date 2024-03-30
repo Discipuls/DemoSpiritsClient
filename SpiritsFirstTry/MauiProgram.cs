@@ -6,7 +6,8 @@ using SpiritsFirstTry.Services;
 using SpiritsFirstTry.Services.Interfaces;
 using SpiritsFirstTry.ViewModels;
 using The49.Maui.BottomSheet;
-
+using System.Reflection;
+using Microsoft.Extensions.Configuration;
 namespace SpiritsFirstTry
 {
     public static class MauiProgram
@@ -14,6 +15,14 @@ namespace SpiritsFirstTry
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
+
+            var a = Assembly.GetExecutingAssembly();
+            using var stream = a.GetManifestResourceStream("SpiritsFirstTry.appsettings.Development.json");
+
+            var config = new ConfigurationBuilder()
+                        .AddJsonStream(stream)
+                        .Build();
+
             builder
                 .UseMauiApp<App>()
                 .UseBottomSheet()
@@ -24,10 +33,16 @@ namespace SpiritsFirstTry
                     fonts.AddFont("A DAY WITHOUT SUN.otf", "Asterlight");
                 });
 
+
+
+
+
+
+            builder.Configuration.AddConfiguration(config);
 #if DEBUG
-    		builder.Logging.AddDebug();
-#endif
-            builder.UseArcGISRuntime(config => config.UseApiKey("AAPK5097e917f3254b0fb46110d95982e99exKDkBAgOLzsIkGV76szaup4bRsialeK74tnC5M4D-QeyQGGrcERl11Q7BZFmAQ5y"));
+            builder.Logging.AddDebug();
+#endif//"AAPK5097e917f3254b0fb46110d95982e99exKDkBAgOLzsIkGV76szaup4bRsialeK74tnC5M4D-QeyQGGrcERl11Q7BZFmAQ5y"
+            builder.UseArcGISRuntime(c => c.UseApiKey(config["ArcGis:ApiKey"]));
             builder.Services.AddAutoMapper(typeof(SpiritAutoMapper));
 
             builder.Services.AddSingleton<MainPage>();
