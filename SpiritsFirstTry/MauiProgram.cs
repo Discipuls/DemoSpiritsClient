@@ -8,6 +8,9 @@ using SpiritsFirstTry.ViewModels;
 using The49.Maui.BottomSheet;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
+#if ANDROID
+using SpiritsFirstTry.Platforms.Android;
+#endif
 namespace SpiritsFirstTry
 {
     public static class MauiProgram
@@ -54,6 +57,9 @@ namespace SpiritsFirstTry
             builder.Services.AddSingleton<AdminSpiritPage>();
             builder.Services.AddSingleton<AdminHabitatPage>();
             builder.Services.AddSingleton<AdminHabitatViewModel>();
+#if ANDROID
+            builder.Services.AddSingleton<IGoogleAuthentificationService, GoogleAuthentificationService>();
+#endif
 
 
             builder.Services.AddTransient<BottomSheetView>();
