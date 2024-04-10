@@ -33,18 +33,10 @@ public partial class AdminSpiritPage : ContentPage
 
     protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
-        //  this.SpiritsListView.ItemsSource = viewModel.Spirits; 
-
         base.OnNavigatedTo(args);
-      //  this.SpiritsListView.ItemsSource = viewModel.Spirits;
-
     }
     protected override void OnAppearing()
     {
-        //this.SpiritsListView.ItemsSource = viewModel.Spirits;
-
         base.OnAppearing();
-     //   this.SpiritsListView.ItemsSource = viewModel.Spirits;
-
     }
 }

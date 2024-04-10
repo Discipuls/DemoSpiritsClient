@@ -3,11 +3,6 @@ using SpiritsClassLibrary.DTOs.GeoPointDTOs;
 using SpiritsClassLibrary.DTOs.SpiritDTOs;
 using SpiritsClassLibrary.Models;
 using SpiritsFirstTry.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpiritsFirstTry.AutoMappers
 {

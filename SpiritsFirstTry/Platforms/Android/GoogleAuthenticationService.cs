@@ -3,11 +3,6 @@ using Android.Gms.Auth.Api.SignIn;
 using Microsoft.Extensions.Configuration;
 using SpiritsFirstTry.DTOs;
 using SpiritsFirstTry.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpiritsFirstTry.Platforms.Android
 {
@@ -36,7 +31,6 @@ namespace SpiritsFirstTry.Platforms.Android
                 .RequestProfile()
                 .Build();
 
-            // Get client
             _googleSignInClient = GoogleSignIn.GetClient(_activity, _gso);
             MainActivity.ResultGoogleAuth += MainActivity_ResultGoogleAuth;
 

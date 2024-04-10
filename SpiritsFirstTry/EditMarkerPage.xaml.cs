@@ -1,4 +1,3 @@
-using Esri.ArcGISRuntime.Mapping;
 using SpiritsFirstTry.ViewModels;
 
 namespace SpiritsFirstTry;

@@ -2,7 +2,6 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.Gms.Auth.Api.SignIn;
-using Android.OS;
 
 namespace SpiritsFirstTry
 {
@@ -13,14 +12,12 @@ namespace SpiritsFirstTry
 
         protected override async void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            // Auth request code
+            //code on auth done
             if (requestCode == 9001)
             {
                 try
                 {
-                    // Read intent result data
                     var currentAccount = await GoogleSignIn.GetSignedInAccountFromIntentAsync(data);
-                    // Rise static event for send data
                     ResultGoogleAuth?.Invoke(this, (currentAccount.Email != null, currentAccount));
                 }
                 catch (Exception ex)

@@ -77,20 +77,14 @@ public partial class SpiritUpdatePage : ContentPage
     private void TapEditMarkerImage(object sender, TappedEventArgs args)
     {
         _ = _viewModel.EditMarkerImage(this.markerImage);
-        // TODO move to SAVE
-
     }
     private void TapEditCardImage(object sender, TappedEventArgs args)
     {
         _ = _viewModel.EditCardImage(this.CardImage);
-        // TODO move to SAVE
-
     }
 
     private void TapEditMarker(object sender, TappedEventArgs args)
     {
         _ = _viewModel.EditMarker();
-        // TODO move to SAVE
-
     }
 }

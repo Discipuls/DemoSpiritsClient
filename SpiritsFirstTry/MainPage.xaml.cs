@@ -1,10 +1,8 @@
 ﻿// Ignore Spelling: Admin
 
-using Esri.ArcGISRuntime.Geometry;
-using Esri.ArcGISRuntime.Mapping;
-using SpiritsFirstTry.ViewModels;
 using Microsoft.Extensions.Configuration;
 using SpiritsFirstTry.Services.Interfaces;
+using SpiritsFirstTry.ViewModels;
 
 
 #if ANDROID
@@ -23,7 +21,6 @@ namespace SpiritsFirstTry
             IGoogleAuthenticationService authentificationService,
             IRestService restService)
         {
-           // Shell.Current.GoToAsync("//LoginPage");
            this.restService = restService;
             this.authentificationService = authentificationService;
             this.config = config;
@@ -42,7 +39,6 @@ namespace SpiritsFirstTry
         }
         public void TapAdmin(object sender, TappedEventArgs args)
         {
-        //    _ = doAuth();
             mainViewModel.HideBottomPage();
             var navigaionParameter = new ShellNavigationQueryParameters
             {

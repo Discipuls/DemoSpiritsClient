@@ -5,14 +5,8 @@ using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Maui;
 using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.UI;
-using Microsoft.Maui.Controls.Shapes;
 using SpiritsFirstTry.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpiritsFirstTry.ViewModels
 {
@@ -70,7 +64,6 @@ namespace SpiritsFirstTry.ViewModels
             pinSymbol.Height = 40/1.3;
 
             Graphic pinGraphic = new Graphic(SpiritDTO.mapPoint, pinSymbol);
-        //    SpiritDTO.pinGraphic = pinGraphic;
             SpiritsGraphicOverlay.Graphics.Add(pinGraphic);
 
         }

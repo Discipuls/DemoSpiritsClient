@@ -44,7 +44,7 @@ namespace SpiritsFirstTry
             builder.Configuration.AddConfiguration(config);
 #if DEBUG
             builder.Logging.AddDebug();
-#endif//"AAPK5097e917f3254b0fb46110d95982e99exKDkBAgOLzsIkGV76szaup4bRsialeK74tnC5M4D-QeyQGGrcERl11Q7BZFmAQ5y"
+#endif
             builder.UseArcGISRuntime(c => c.UseApiKey(config["ArcGis:ApiKey"]));
             builder.Services.AddAutoMapper(typeof(SpiritAutoMapper));
 

@@ -1,15 +1,10 @@
 ﻿using AutoMapper;
 using SpiritsClassLibrary.DTOs.SpiritDTOs;
-using SpiritsClassLibrary.Models;
 using SpiritsFirstTry.Models;
 using SpiritsFirstTry.Services.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace SpiritsFirstTry.Services
 {
@@ -77,7 +72,6 @@ namespace SpiritsFirstTry.Services
                     resultSpiritsBasicsDTOs.Add(apiSpirit);
 
                     await progressBar.ProgressTo(progressBar.Progress + (0.75 / APISpirits.Count), 5, Easing.Linear);
-                    //TODO fix progress bar
                 }
 
                 SaveSpiritsToJson(resultSpiritsBasicsDTOs);
@@ -100,7 +94,6 @@ namespace SpiritsFirstTry.Services
                     }
 
                     await progressBar.ProgressTo(progressBar.Progress + (0.75 / APISpirits.Count), 5, Easing.Linear);
-                    //TODO fix progress bar
                 }
 
 

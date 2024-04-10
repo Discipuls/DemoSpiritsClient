@@ -3,15 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Maui;
-using Esri.ArcGISRuntime.UI;
 using SpiritsFirstTry.Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpiritsFirstTry.ViewModels
 {

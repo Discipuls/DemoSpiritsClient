@@ -8,21 +8,11 @@ using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.UI;
 using SpiritsClassLibrary.DTOs.SpiritDTOs;
 using SpiritsClassLibrary.Models;
-using SpiritsFirstTry.AutoMappers;
 using SpiritsFirstTry.DTOs;
 using SpiritsFirstTry.Models;
 using SpiritsFirstTry.Services.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.IO.Pipes;
-using System.Linq;
-using System.Net.Mime;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using The49.Maui.BottomSheet;
 
 namespace SpiritsFirstTry.ViewModels
 {
@@ -146,9 +136,6 @@ namespace SpiritsFirstTry.ViewModels
                 await cardFileStream.ReadAsync(cardBuffer, 0, cardBuffer.Length);
                 updateSpiritDTO.CardImage = cardBuffer;
 
-                //TODO check chenges
-                //TODO add and remove classification on page
-                //TODO add and remove habitats on page
 
                 updateSpiritDTO.Classification = ClassificationPicker.Select(p => (SpiritType)p.SelectedIndex).ToList();
                 updateSpiritDTO.HabitatsIds = HabitatPicker.Select(p => habitatsDTOs[p.SelectedIndex].Id).ToList();
@@ -195,21 +182,11 @@ namespace SpiritsFirstTry.ViewModels
             else
             {
 
-            //    File.Delete(markerFilePath);
                 using FileStream localFileStream = File.OpenRead(result.FullPath);
                 spiritDTO.MarkerImageRoute = result.FullPath;
-            /*    var buffer = new byte[localFileStream.Length];
-                await localFileStream.ReadAsync(buffer, 0, buffer.Length);*/
+
                 localFileStream.Close();
                 markerImage.Source = result.FullPath;
-                /*
-                 *                 string markerFilePath = Path.Combine(FileSystem.CacheDirectory, "MarkerImage_" + spiritDTO.Id.ToString() + "_.png");
-
-                                MemoryStream markerImageMS = new MemoryStream(spiritDTO.MarkerImage);
-                                using FileStream markerFileStream = File.OpenWrite(markerFilePath);
-                                await markerImageMS.CopyToAsync(markerFileStream);
-                                markerFileStream.Close();*/ //TODO move to save
-
             }
         }
 
@@ -225,8 +202,7 @@ namespace SpiritsFirstTry.ViewModels
             {
                 using FileStream localFileStream = File.OpenRead(result.FullPath);
                 spiritDTO.CardImageRoute = result.FullPath;
-/*                var buffer = new byte[localFileStream.Length];
-                await localFileStream.ReadAsync(buffer, 0, buffer.Length);*/
+
                 localFileStream.Close();
                 cardImage.Source = result.FullPath;
             }

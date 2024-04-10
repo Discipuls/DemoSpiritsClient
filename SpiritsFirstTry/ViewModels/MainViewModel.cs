@@ -1,27 +1,11 @@
-﻿using AutoMapper;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Maui;
 using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.UI;
-using Microsoft.Maui.Controls;
-using SpiritsClassLibrary.DTOs.GeoPointDTOs;
-using SpiritsClassLibrary.DTOs.HabitatDTOs;
-using SpiritsClassLibrary.DTOs.SpiritDTOs;
-using SpiritsClassLibrary.Models;
 using SpiritsFirstTry.Models;
 using SpiritsFirstTry.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using The49.Maui.BottomSheet;
 using Map = Esri.ArcGISRuntime.Mapping.Map;
 
@@ -55,7 +39,6 @@ namespace SpiritsFirstTry.ViewModels
 
             bottomSheeet = new BottomSheetView(bottomSheeetVm);
             bottomSheeet.IsCancelable = false;
-           // bottomSheeet.Detents.Add(new MediumDetent());
             var rt08 = new RatioDetent();
             rt08.Ratio = 0.8f;
             var rt025 = new RatioDetent();
@@ -64,7 +47,6 @@ namespace SpiritsFirstTry.ViewModels
 
             bottomSheeet.Detents.Add(rt08);
             dataDirectory = FileSystem.AppDataDirectory;
-            //     bottomSheeet.SelectedDetent = bottomSheeet.Detents[2];
 
         }
 

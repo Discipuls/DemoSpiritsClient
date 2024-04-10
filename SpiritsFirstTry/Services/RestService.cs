@@ -1,29 +1,26 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using SpiritsClassLibrary.DTOs;
-using SpiritsClassLibrary.Models;
-using SpiritsClassLibrary.DTOs.SpiritDTOs;
+﻿using Microsoft.Extensions.Configuration;
 using SpiritsClassLibrary.DTOs.HabitatDTOs;
+using SpiritsClassLibrary.DTOs.SpiritDTOs;
 using SpiritsFirstTry.Services.Interfaces;
 using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 
 namespace SpiritsFirstTry.Services
 {
     public class RestService : IRestService
     {
         private IGoogleAuthenticationService _googleAuthService;
+        private IConfiguration Configuration;
         HttpClient _client;
         JsonSerializerOptions _serializerOptions;
-        string _baseUrl = "https://demospiritsapi-a2cyju5syq-lm.a.run.app";
-        //string _baseUrl = "https://heroic-naturally-reptile.ngrok-free.app";
+        string _baseUrl;
 
-        public RestService(IGoogleAuthenticationService googleAuthenticationService) {
+
+        public RestService(IGoogleAuthenticationService googleAuthenticationService,
+            IConfiguration configuration) {
+            Configuration = configuration;
+            _baseUrl = configuration["Api:BaseUrl"];
             _client = new HttpClient();
             _serializerOptions = new JsonSerializerOptions()
             {
@@ -32,6 +29,7 @@ namespace SpiritsFirstTry.Services
             };
             _googleAuthService = googleAuthenticationService;
         }
+
         public async Task AddAuthHeader(string token)
         {
             _client.DefaultRequestHeaders.Clear();
@@ -42,7 +40,6 @@ namespace SpiritsFirstTry.Services
         {
             using StringContent stringContent = new(
                 JsonSerializer.Serialize(createHabitatDTO), Encoding.UTF8, "application/json");
-         //   stringContent.Headers.Add("Authorization", $"Bearer {token}");
             HttpResponseMessage respone = await _client.PostAsync(_baseUrl + "/Habitat", stringContent);
         }
 

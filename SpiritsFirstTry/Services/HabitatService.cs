@@ -1,16 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.Maui.Controls;
 using SpiritsClassLibrary.DTOs.HabitatDTOs;
-using SpiritsClassLibrary.Models;
 using SpiritsFirstTry.Models;
 using SpiritsFirstTry.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace SpiritsFirstTry.Services
 {

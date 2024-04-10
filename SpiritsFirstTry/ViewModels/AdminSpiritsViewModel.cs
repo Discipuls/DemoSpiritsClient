@@ -2,17 +2,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Esri.ArcGISRuntime.Geometry;
-using SpiritsClassLibrary.DTOs.SpiritDTOs;
 using SpiritsClassLibrary.Models;
-using SpiritsFirstTry.AutoMappers;
 using SpiritsFirstTry.DTOs;
 using SpiritsFirstTry.Models;
 using SpiritsFirstTry.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpiritsFirstTry.ViewModels
 {

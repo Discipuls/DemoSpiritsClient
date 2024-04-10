@@ -6,18 +6,10 @@ using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Maui;
 using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.UI;
-using Esri.ArcGISRuntime.UI.Editing;
-using Microsoft.Maui.Controls.Shapes;
 using SpiritsClassLibrary.DTOs.GeoPointDTOs;
 using SpiritsClassLibrary.DTOs.HabitatDTOs;
-using SpiritsClassLibrary.Models;
 using SpiritsFirstTry.DTOs;
 using SpiritsFirstTry.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpiritsFirstTry.ViewModels
 {
