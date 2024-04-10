@@ -10,6 +10,9 @@ namespace SpiritsFirstTry.Services.Interfaces
 {
     public interface IRestService
     {
+        public Task AddAuthHeader(string token);
+        public Task<bool> GetIsAdminAsync();
+
         public Task<List<GetSpiritBasicsDTO>> GetAllSpiritsAsync();
         public Task<GetSpiritDTO> GetSpiritAsync(int id);
         public Task UpdateSpiritAsync(UpdateSpiritDTO updateSpiritDTO);

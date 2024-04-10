@@ -11,28 +11,38 @@ using SpiritsClassLibrary.Models;
 using SpiritsClassLibrary.DTOs.SpiritDTOs;
 using SpiritsClassLibrary.DTOs.HabitatDTOs;
 using SpiritsFirstTry.Services.Interfaces;
+using System.Net.Http.Headers;
 
 namespace SpiritsFirstTry.Services
 {
     public class RestService : IRestService
     {
+        private IGoogleAuthenticationService _googleAuthService;
         HttpClient _client;
         JsonSerializerOptions _serializerOptions;
-        string _baseUrl = "https://heroic-naturally-reptile.ngrok-free.app";
+        string _baseUrl = "https://demospiritsapi-a2cyju5syq-lm.a.run.app";
+        //string _baseUrl = "https://heroic-naturally-reptile.ngrok-free.app";
 
-        public RestService() {
+        public RestService(IGoogleAuthenticationService googleAuthenticationService) {
             _client = new HttpClient();
             _serializerOptions = new JsonSerializerOptions()
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 WriteIndented = true
             };
+            _googleAuthService = googleAuthenticationService;
+        }
+        public async Task AddAuthHeader(string token)
+        {
+            _client.DefaultRequestHeaders.Clear();
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
         public async Task CreateHabitatAsync(CreateHabitatDTO createHabitatDTO)
         {
             using StringContent stringContent = new(
                 JsonSerializer.Serialize(createHabitatDTO), Encoding.UTF8, "application/json");
+         //   stringContent.Headers.Add("Authorization", $"Bearer {token}");
             HttpResponseMessage respone = await _client.PostAsync(_baseUrl + "/Habitat", stringContent);
         }
 
@@ -98,6 +108,21 @@ namespace SpiritsFirstTry.Services
             }
 
             return habitat;
+        }
+
+        public async Task<bool> GetIsAdminAsync()
+        {
+            HttpResponseMessage respone = await _client.GetAsync(_baseUrl + "/Admin");
+            if (respone.IsSuccessStatusCode)
+            {
+                string content = await respone.Content.ReadAsStringAsync();
+                if (content == "true")
+                {
+                    return true;
+                }
+            }
+            return false;
+            
         }
 
         public async Task<GetSpiritDTO> GetSpiritAsync(int id)

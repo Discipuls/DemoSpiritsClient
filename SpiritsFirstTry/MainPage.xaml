@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SpiritsFirstTry.MainPage"
-             xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013">
+             xmlns:esri="http://schemas.esri.com/arcgis/runtime/2013"
+             Shell.NavBarIsVisible="False">
 
     <Grid>
         <esri:MapView x:Name="MainMapView"/>
@@ -20,13 +21,23 @@
                                          NumberOfTapsRequired="1" />
                 </Image.GestureRecognizers>
             </Image>
-            <Image Source="admin_icon.png" MaximumHeightRequest="30"
+            <Image x:Name="adminImage" IsVisible="False" Source="admin_icon.png" MaximumHeightRequest="30"
+              MaximumWidthRequest="30" VerticalOptions="Start" 
+              InputTransparent="False" HorizontalOptions="Center"
+              Margin="30" 
+                   Grid.Row="0">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapAdmin"
+                                         NumberOfTapsRequired="1" />
+                </Image.GestureRecognizers>
+            </Image>
+            <Image x:Name="loginImage" Source="login.png" MaximumHeightRequest="30"
               MaximumWidthRequest="30" VerticalOptions="Start" 
               InputTransparent="False" HorizontalOptions="End"
               Margin="30" 
                    Grid.Row="0">
                 <Image.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="TapAdmin"
+                    <TapGestureRecognizer Tapped="TapLogin"
                                          NumberOfTapsRequired="1" />
                 </Image.GestureRecognizers>
             </Image>
@@ -36,6 +47,7 @@
                 Grid.Row="2" Margin="0,0,0,25" ScaleY="5" 
                 ProgressColor="Lime"/>
         </Grid>
+
     </Grid>
  
 </ContentPage>

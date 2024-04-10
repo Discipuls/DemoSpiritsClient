@@ -70,8 +70,10 @@ namespace SpiritsFirstTry.ViewModels
             viewModel.create = true;
             viewModel.SpiritDTO = new UpdateMapSpiritDTO();
 
-            viewModel.SpiritDTO.MarkerLocation = new MarkerPoint { Latitude = 53.897867, Longitude = 27.542744 };
+            viewModel.SpiritDTO.MarkerLocation = new MarkerPoint { Latitude = 53.897867, Longitude = 27.542744
+            };
             var MinskPoint = new MapPoint(27.542744, 53.897867, SpatialReferences.Wgs84);
+            MinskPoint = (MapPoint)MinskPoint.Project(SpatialReferences.WebMercator);
             viewModel.SpiritDTO.mapPoint = MinskPoint;
             viewModel.SpiritDTO.Habitats = new List<Habitat> { habitats[0] };
             viewModel.SpiritDTO.HabitatsDTOs

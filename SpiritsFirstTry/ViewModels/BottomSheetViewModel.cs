@@ -47,14 +47,6 @@ namespace SpiritsFirstTry.ViewModels
 
             string localFilePath = Path.Combine(dataDirectory, "CardImage_" + spirit.Id.ToString() + "_.png");
             CurrentCardImage.Source = localFilePath;
-            /*// using Stream sourceStream = await photo.OpenReadAsync();
-            using FileStream localFileStream = File.OpenRead(localFilePath);
-            CurrentCardImage = new Image
-            {
-                Source = ImageSource.FromStream(() => localFileStream)
-            };
-            CurrentCardImage.ScaleX = 1000;
-            CurrentCardImage.ScaleY = 1000;*/
         }
 
         public void SetIsSearchOpend(bool b)
@@ -101,16 +93,29 @@ namespace SpiritsFirstTry.ViewModels
 
             if (currentHabitat != null)
             {
+
                 foreach (var habitat in Habitats)
                 {
                     habitat.PolygonGraphic.IsVisible = false;
                 }
                 currentHabitat.PolygonGraphic.IsVisible = true;
+                bool moved = false;
                 foreach (var spirit in Spirits)
                 {
-                    if (spirit.mapPoint.Within(currentHabitat.PolygonGraphic.Geometry))
+                    if (spirit.Habitats.Where(h => h.Id == currentHabitat.Id).Count() != 0)
                     {
+
                         spirit.pinGraphic.IsVisible = true;
+                        if (!moved)
+                        {
+                            await mapView.SetViewpointGeometryAsync(currentHabitat.PolygonGraphic.Geometry, 70);
+                            MapPoint mapPoint = new MapPoint(spirit.mapPoint.X, spirit.mapPoint.Y - mapView.MapScale / 20, spirit.mapPoint.SpatialReference);
+                            Viewpoint viewpoint = new Viewpoint(mapPoint);
+                            await mapView.SetViewpointAsync(viewpoint, TimeSpan.FromSeconds(3));
+
+                            moved = true;
+                        }
+
                     }
                     else
                     {
@@ -141,22 +146,25 @@ namespace SpiritsFirstTry.ViewModels
                         Selected = spirit;
                         string localFilePath = Path.Combine(dataDirectory, "CardImage_" + spirit.Id.ToString() + "_.png");
                         CurrentCardImage.Source = localFilePath;
-                        MapPoint mapPoint = new MapPoint(spirit.mapPoint.X, spirit.mapPoint.Y - 200000, spirit.mapPoint.SpatialReference);
-                        Viewpoint viewpoint = new Viewpoint(mapPoint, 5000000);
-                        await mapView.SetViewpointAsync(viewpoint, TimeSpan.FromSeconds(0.5));
-
-
-
                         foreach (var sp in Spirits)
                         {
-                            sp.markerSymbol.Height = 40;
-                            sp.markerSymbol.Width = 40;
+                            sp.markerSymbol.Height = 40 / 1.3;
+                            sp.markerSymbol.Width = 40 / 1.3;
                             sp.polygonGraphic.IsVisible = false;
                         }
                         spirit.polygonGraphic.IsVisible = true;
                         spirit.markerSymbol.Height = 60;
                         spirit.markerSymbol.Width = 60;
                         spirit.pinGraphic.ZIndex = MapSpirit.maxzindex + 1;
+                        var habitat = Habitats.Where(h => h.Id == spirit.Habitats[0].Id).First();
+                        await mapView.SetViewpointGeometryAsync(habitat.PolygonGraphic.Geometry, 50);
+                        MapPoint mapPoint = new MapPoint(spirit.mapPoint.X, spirit.mapPoint.Y - mapView.MapScale / 30, spirit.mapPoint.SpatialReference);
+                        Viewpoint viewpoint = new Viewpoint(mapPoint);
+                        await mapView.SetViewpointAsync(viewpoint, TimeSpan.FromSeconds(3));
+
+
+
+
                         break;
                     }
                 }

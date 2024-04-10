@@ -5,105 +5,93 @@
              xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
              xmlns:viewmodel="clr-namespace:SpiritsFirstTry.ViewModels"
              x:DataType="viewmodel:BottomSheetViewModel"
-                   BackgroundColor="#333333">
+                   BackgroundColor="#1D1D1D">
 
-    
-        <Grid>
-        <ScrollView>
+    <Grid RowDefinitions="0.05*, *">
+        <Grid Grid.Row="0" Margin="10">
+                <Image HeightRequest="5" Source="slider.png" HorizontalOptions="Center"></Image>
+        </Grid>
+        <Grid Grid.Row="1">
+            <ScrollView>
 
-            <Grid RowDefinitions="0.3*, *" Padding="20,0" 
-              IsVisible="{Binding IsSpiritOpend}"
-              x:Name="SpiritGrid">
-                <Image x:Name="CurrentCardImage" 
-                    Grid.Row="0"/>
-                <StackLayout Grid.Row="1">
-                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                        <Label 
-                            Text="Імя: "
-                            FontSize="70" 
-                            VerticalTextAlignment="Center"
-                            HorizontalTextAlignment="Start" FontFamily="Asterlight"
-                            TextColor="#cccccc"
-                            />
-                        <Label 
-                            Text="{Binding Selected.Name, StringFormat='{0}'}"
-                            FontSize="100"
+                <Grid RowDefinitions="250, *" Padding="20,0" 
+          IsVisible="{Binding IsSpiritOpend}"
+          x:Name="SpiritGrid">
+                    <Image x:Name="CurrentCardImage" 
+                Grid.Row="0"/>
+                    <StackLayout Margin="0,20,0,0" Grid.Row="1">
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                            <Label 
+                        Text="Імя: "
+                        FontSize="Title" 
+                        VerticalTextAlignment="Center"
+                        HorizontalTextAlignment="Start"
+                        TextColor="#cccccc"
+                        />
+                            <Label 
+                        Text="{Binding Selected.Name, StringFormat='{0}'}"
+                        FontSize="Title"
+                        VerticalTextAlignment="Start"
+                        HorizontalTextAlignment="Start"
+                        TextColor="#cccccc"
+                        />
+                        </StackLayout>
+
+
+                            <Label  Margin="0,20,0,0" 
+                        Text="{Binding Selected.ClassificationString, StringFormat='Класіфікацыя: {0}'}"
+                        FontSize="Large"
+                        VerticalTextAlignment="Start"
+                        HorizontalTextAlignment="Start"
+                        TextColor="#cccccc"/>
+
+                            <Label Margin="0,20,0,0"
+                            Text="{Binding Selected.HabitatsNames, StringFormat='Абітае: {0}'}"
+                            FontSize="Large"
                             VerticalTextAlignment="Start"
-                            HorizontalTextAlignment="Start" FontFamily="Asterlight"
-                            TextColor="#cccccc"
-                            />              
+                            HorizontalTextAlignment="Start"
+                            TextColor="#cccccc"/>
+
+
+
+                        <Label 
+                    Text="Кароткія звесткі"
+                    FontSize="Large" 
+                    VerticalTextAlignment="Start"
+                    HorizontalTextAlignment="Center"
+                        TextColor="#cccccc" Margin="0,20,0,0"/>
+                        <Label 
+                    Text="{Binding Selected.Description, StringFormat='{0}'}"
+                    FontSize="Medium"
+                    VerticalTextAlignment="Start"
+                    HorizontalTextAlignment="Start"
+                        TextColor="#cccccc"/>
                     </StackLayout>
+                </Grid>
+            </ScrollView>
 
-
-                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                        <Label 
-                            Text="Класіфікацыя: "
-                            FontSize="50" 
-                            VerticalTextAlignment="Center"
-                            HorizontalTextAlignment="Start" FontFamily="Asterlight"
-                            TextColor="#cccccc"
-                            />      
-                        <Label 
-                            Text="{Binding Selected.ClassificationString, StringFormat='{0}'}"
-                            FontSize="70" Margin="5"
-                            VerticalTextAlignment="Start"
-                            HorizontalTextAlignment="Start" FontFamily="Asterlight"
-                            TextColor="#cccccc"/>
-                    </StackLayout>
-
-                        <Label 
-                            Text="Дзе распаўсюджаны: "
-                            FontSize="50" 
-                            VerticalTextAlignment="Center"
-                            HorizontalTextAlignment="Center" FontFamily="Asterlight"
-                            TextColor="#cccccc"
-                            />
-                        <Label 
-                        Text="{Binding Selected.HabitatsNames, StringFormat='{0}'}"
-                        FontSize="40"
-                        VerticalTextAlignment="Start"
-                        HorizontalTextAlignment="Start" FontFamily="Asterlight"
-                            TextColor="#cccccc"/>
-
-
-                    <Label 
-                        Text="Кароткія звесткі:"
-                        FontSize="50" 
-                        VerticalTextAlignment="Start"
-                        HorizontalTextAlignment="Center" FontFamily="Asterlight"
-                            TextColor="#cccccc"/>
-                    <Label 
-                        Text="{Binding Selected.Description, StringFormat='{0}'}"
-                        FontSize="30"
-                        VerticalTextAlignment="Start"
-                        HorizontalTextAlignment="Start" FontFamily="Asterlight"
-                            TextColor="#cccccc"/>
-                </StackLayout>
-            </Grid>
-        </ScrollView>
-
-        <Grid x:Name="SearchGrid" IsVisible="{Binding IsSearchOpend}"
-              RowDefinitions="0.1*, 0.9*" Background="#616161">
+            <Grid x:Name="SearchGrid" IsVisible="{Binding IsSearchOpend}"
+          RowDefinitions="auto, *">
                 <SearchBar x:Name="searchbar" SearchCommand="{Binding performSearchCommand}"
-                       TextChanged="search_TextChanged"
-                       Grid.Row="0" FontSize="30" FontFamily="Asterlight" 
-                            TextColor="#cccccc"/>
+                   TextChanged="search_TextChanged"
+                   Grid.Row="0" FontSize="25"
+                        TextColor="#cccccc"/>
 
                 <CollectionView Grid.Row="1"
-                 ItemsSource="{Binding SearchResults}"
-                 SelectionMode="None">
+             ItemsSource="{Binding SearchResults}"
+             SelectionMode="None">
 
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="{x:Type x:String}" >
-                            <Grid Padding="0,5">
-                            <Frame Background="#2F2E2C">
+                            <Grid Padding="0,5" Margin="10,0">
+                                <Frame Background="#2C2C2C" >
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:BottomSheetViewModel}},Path=TapCommand}"
-                                            CommandParameter="{Binding .}"/>
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:BottomSheetViewModel}},Path=TapCommand}"
+                                        CommandParameter="{Binding .}"/>
                                     </Frame.GestureRecognizers>
-                                <Label Text="{Binding .}"  FontSize="30" FontFamily="Asterlight" 
-                            TextColor="#cccccc"/>
+                                    <Label Text="{Binding .}"  FontSize="Default" 
+                        TextColor="#cccccc"/>
                                 </Frame>
                             </Grid>
                         </DataTemplate>
@@ -111,6 +99,8 @@
 
                 </CollectionView>
             </Grid>
-                
+
         </Grid>
+    </Grid>
+    
 </the49:BottomSheet>

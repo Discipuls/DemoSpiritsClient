@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace SpiritsFirstTry.Services.Interfaces
 {
-    public interface IGoogleAuthentificationService
+    public interface IGoogleAuthenticationService
     {
         Task<UserDTO> AythenticateAsync();
         Task LogoutAsync();
         Task<UserDTO> GetCurrentUserAsync();
+
+        Task<bool> getIsGuest();
+        Task setIsGuest(bool isGuest);
     }
 }

@@ -108,8 +108,8 @@ namespace SpiritsFirstTry.ViewModels
 
 
             SpiritDTO.markerSymbol = pinSymbol;
-            pinSymbol.Width = 40;
-            pinSymbol.Height = 40;
+            pinSymbol.Width = 40/1.3;
+            pinSymbol.Height = 40/1.3;
 
             Graphic pinGraphic = new Graphic(SpiritDTO.mapPoint, pinSymbol);
             SpiritDTO.pinGraphic = pinGraphic;

@@ -6,6 +6,7 @@ using Esri.ArcGISRuntime.Mapping;
 using Esri.ArcGISRuntime.Maui;
 using Esri.ArcGISRuntime.Symbology;
 using Esri.ArcGISRuntime.UI;
+using Microsoft.Maui.Controls;
 using SpiritsClassLibrary.DTOs.GeoPointDTOs;
 using SpiritsClassLibrary.DTOs.HabitatDTOs;
 using SpiritsClassLibrary.DTOs.SpiritDTOs;
@@ -29,6 +30,7 @@ namespace SpiritsFirstTry.ViewModels
 
     public partial class MainViewModel : ObservableObject
     {
+        IRestService restService;
         ISpiritService _spiritService;
         IHabitatService _habitatService;
 
@@ -40,19 +42,27 @@ namespace SpiritsFirstTry.ViewModels
         BottomSheetViewModel bottomSheeetVm;
         public GraphicsOverlay polygonOverlay;
         private string dataDirectory;
+        public Image adminImage;
 
 
-        public MainViewModel(ISpiritService spiritService, IHabitatService habitatService) {
+        public MainViewModel(ISpiritService spiritService, IHabitatService habitatService, IRestService restService) {
             _spiritService = spiritService;
             _habitatService = habitatService;
+            this.restService = restService;
 
 
             bottomSheeetVm = new BottomSheetViewModel();
 
             bottomSheeet = new BottomSheetView(bottomSheeetVm);
             bottomSheeet.IsCancelable = false;
-            bottomSheeet.Detents.Add(new MediumDetent());
-            bottomSheeet.Detents.Add(new FullscreenDetent());
+           // bottomSheeet.Detents.Add(new MediumDetent());
+            var rt08 = new RatioDetent();
+            rt08.Ratio = 0.8f;
+            var rt025 = new RatioDetent();
+            rt025.Ratio = 0.3f;
+            bottomSheeet.Detents.Add(rt025);
+
+            bottomSheeet.Detents.Add(rt08);
             dataDirectory = FileSystem.AppDataDirectory;
             //     bottomSheeet.SelectedDetent = bottomSheeet.Detents[2];
 
@@ -83,6 +93,18 @@ namespace SpiritsFirstTry.ViewModels
         {
             this.progressBar = pg;
         }
+        public async Task SetupAdminImage(Image image)
+        {
+            this.adminImage = image;
+            if(!(await restService.GetIsAdminAsync()))
+            {
+                image.IsVisible = false;
+            }
+            else
+            {
+                image.IsVisible = true;
+            }
+        }
 
         public async Task HideBottomPage()
         {
@@ -95,14 +117,14 @@ namespace SpiritsFirstTry.ViewModels
 
             try
             {
-                await progressBar.ProgressTo(0.0, 500, Easing.Linear);
+                await progressBar.ProgressTo(0.0, 50, Easing.Linear);
 
                 Habitats = await _habitatService.LoadHabitats(progressBar);
-                await progressBar.ProgressTo(0.25, 500, Easing.Linear);
+                await progressBar.ProgressTo(0.25, 50, Easing.Linear);
 
                 Spirits = await _spiritService.LoadSpirits(progressBar, Habitats);
 
-                await progressBar.ProgressTo(1, 500, Easing.Linear);
+                await progressBar.ProgressTo(1, 50, Easing.Linear);
                 progressBar.IsVisible = false;
 
                 await CreateSpiritMarkers();
@@ -173,8 +195,8 @@ namespace SpiritsFirstTry.ViewModels
 
                 foreach(var spirit in Spirits)
                 {
-                    spirit.markerSymbol.Height = 40;
-                    spirit.markerSymbol.Width = 40;
+                    spirit.markerSymbol.Height = 40/1.3;
+                    spirit.markerSymbol.Width = 40/1.3;
                     spirit.polygonGraphic.IsVisible = false;
                 }
 
@@ -190,21 +212,36 @@ namespace SpiritsFirstTry.ViewModels
                 }
 
                 bottomSheeet.SelectedDetent = bottomSheeet.Detents[0];
-                MapPoint mapPoint = new MapPoint(closest.mapPoint.X, closest.mapPoint.Y - 200000, closest.mapPoint.SpatialReference);
-                Viewpoint viewpoint = new Viewpoint(mapPoint, 5000000);
-                await this.MainMapView.SetViewpointAsync(viewpoint, TimeSpan.FromSeconds(0.5));
+
+                try
+                {
+                    var habitat = Habitats.Where(h => h.Id == closest.Habitats[0].Id).First();
+                    await MainMapView.SetViewpointGeometryAsync(habitat.PolygonGraphic.Geometry,50);
+                    MapPoint mapPoint = new MapPoint(closest.mapPoint.X, closest.mapPoint.Y - MainMapView.MapScale/50, closest.mapPoint.SpatialReference);
+                    Viewpoint viewpoint = new Viewpoint(mapPoint);
+                    await MainMapView.SetViewpointAsync(viewpoint, TimeSpan.FromSeconds(3));
+                }
+                catch
+                {
+                    MapPoint mapPoint = new MapPoint(closest.mapPoint.X, closest.mapPoint.Y - 100000, closest.mapPoint.SpatialReference);
+                    Viewpoint viewpoint = new Viewpoint(mapPoint,3000000);
+                    await MainMapView.SetViewpointAsync(viewpoint, TimeSpan.FromSeconds(0.5));
+
+                }
+
             }
             else
             {
                 foreach (var spirit in Spirits)
                 {
-                    spirit.markerSymbol.Height = 40;
-                    spirit.markerSymbol.Width = 40;
+                    spirit.markerSymbol.Height = 40/1.3;
+                    spirit.markerSymbol.Width = 40/1.3;
                 }
                 foreach( var habitat in Habitats){
                     habitat.PolygonGraphic.IsVisible = false;
                 }
                 bottomSheeet.SelectedDetent = bottomSheeet.Detents[2];
+                await MainMapView.SetViewpointScaleAsync(6000000);
             }
         }
 
@@ -229,8 +266,8 @@ namespace SpiritsFirstTry.ViewModels
                 PictureMarkerSymbol pinSymbol = await PictureMarkerSymbol.CreateAsync(localFileStream);
                 localFileStream.Close();
                 spirit.markerSymbol = pinSymbol;
-                pinSymbol.Width = 40;
-                pinSymbol.Height = 40;
+                pinSymbol.Width = 40/1.3;
+                pinSymbol.Height = 40/1.3;
 
                 Graphic pinGraphic = new Graphic(spirit.mapPoint, pinSymbol);
                 spirit.pinGraphic = pinGraphic;

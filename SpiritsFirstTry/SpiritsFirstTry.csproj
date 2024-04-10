@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
+		<TargetFrameworks>net8.0-android;net8.0-maccatalyst</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
 
@@ -44,6 +43,7 @@
 	  <AndroidSigningStorePass>changeme</AndroidSigningStorePass>
 	  <AndroidSigningKeyAlias>spirits</AndroidSigningKeyAlias>
 	  <AndroidSigningKeyPass>changeme</AndroidSigningKeyPass>
+	  <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
@@ -51,6 +51,8 @@
 	  <AndroidSigningStorePass>changeme</AndroidSigningStorePass>
 	  <AndroidSigningKeyAlias>spirits</AndroidSigningKeyAlias>
 	  <AndroidSigningKeyPass>changeme</AndroidSigningKeyPass>
+	  <AndroidPackageFormat>apk</AndroidPackageFormat>
+	  <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -73,6 +75,7 @@
 
 	<ItemGroup>
 	  <MauiImage Remove="Resources\Images\newspirit.png" />
+	  <MauiImage Remove="Resources\MauiImages\load.gif" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -81,9 +84,12 @@
 	  <None Remove="Resources\MauiImages\admin_icon.png" />
 	  <None Remove="Resources\MauiImages\cursor_drag.png" />
 	  <None Remove="Resources\MauiImages\hand_drag.png" />
+	  <None Remove="Resources\MauiImages\load.gif" />
+	  <None Remove="Resources\MauiImages\login.png" />
 	  <None Remove="Resources\MauiImages\pencil.png" />
 	  <None Remove="Resources\MauiImages\plus.png" />
 	  <None Remove="Resources\MauiImages\search_icon.png" />
+	  <None Remove="Resources\MauiImages\slider.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -114,6 +120,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiImage Update="Resources\Images\load.gif">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiImage>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="AdminHabitatPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -127,6 +139,12 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="HabitatUpdatePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="LoadingPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="SpiritUpdatePage.xaml">

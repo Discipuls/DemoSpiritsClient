@@ -11,18 +11,21 @@ using System.Threading.Tasks;
 
 namespace SpiritsFirstTry.Platforms.Android
 {
-    public class GoogleAuthentificationService : IGoogleAuthentificationService
+    public class GoogleAuthenticationService : IGoogleAuthenticationService
     {
         private Activity _activity;
         private GoogleSignInClient _googleSignInClient;
         private TaskCompletionSource<UserDTO> _taskCompletionSource;
+        private bool isGuest { get; set; }
+
+
 
         private Task<UserDTO> GoogleAuthentication
         {
             get => _taskCompletionSource.Task;
         }
 
-        public GoogleAuthentificationService(IConfiguration config)
+        public GoogleAuthenticationService(IConfiguration config)
         {
             _activity = Platform.CurrentActivity;
 
@@ -42,7 +45,7 @@ namespace SpiritsFirstTry.Platforms.Android
         private void MainActivity_ResultGoogleAuth(object sender, (bool Success, GoogleSignInAccount Account) e)
         {
             if (e.Success)
-                // Set result of Task
+            {
                 _taskCompletionSource.SetResult(new UserDTO
                 {
                     Email = e.Account.Email,
@@ -51,9 +54,20 @@ namespace SpiritsFirstTry.Platforms.Android
                     UserName = e.Account.GivenName,
                     Token = e.Account.IdToken
                 });
+                var user = new UserDTO
+                {
+                    Email = e.Account.Email,
+                    FullName = e.Account.DisplayName,
+                    Id = e.Account.Id,
+                    UserName = e.Account.GivenName,
+                    Token = e.Account.IdToken
+                };
+                Console.WriteLine("Token: " + e.Account.IdToken);
+            }
             else
-                // Set Exception
+            {
                 _taskCompletionSource.SetException(new Exception("Error"));
+            }
         }
 
         public Task<UserDTO> AythenticateAsync()
@@ -78,7 +92,6 @@ namespace SpiritsFirstTry.Platforms.Android
                     ,
                     Token = user.IdToken
                 };
-
             }
             catch (Exception)
             {
@@ -88,6 +101,14 @@ namespace SpiritsFirstTry.Platforms.Android
 
         public async Task LogoutAsync() => _googleSignInClient.SignOutAsync();
 
+        public async Task<bool> getIsGuest()
+        {
+            return isGuest;
+        }
 
+        public async Task setIsGuest(bool isGuest)
+        {
+            this.isGuest = isGuest;
+        }
     }
 }

@@ -7,16 +7,19 @@
     Shell.FlyoutBehavior="Disabled"
     Title="SpiritsFirstTry">
 
+
+
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" >
-        
-
-
-
-
     </ShellContent>
+
+    <ShellContent ContentTemplate="{DataTemplate local:LoginPage}"
+                  Route="LoginPage"/>
+
+
+    
 
     
     <TabBar

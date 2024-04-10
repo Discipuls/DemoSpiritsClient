@@ -57,8 +57,10 @@ namespace SpiritsFirstTry
             builder.Services.AddSingleton<AdminSpiritPage>();
             builder.Services.AddSingleton<AdminHabitatPage>();
             builder.Services.AddSingleton<AdminHabitatViewModel>();
+            builder.Services.AddSingleton<LoginPage>();
+            builder.Services.AddSingleton<LoginViewModel>();
 #if ANDROID
-            builder.Services.AddSingleton<IGoogleAuthentificationService, GoogleAuthentificationService>();
+            builder.Services.AddSingleton<IGoogleAuthenticationService, GoogleAuthenticationService>();
 #endif
 
 

@@ -16,11 +16,15 @@ namespace SpiritsFirstTry
     public partial class MainPage : ContentPage
     {
         IConfiguration config;
-        IGoogleAuthentificationService authentificationService;
+        IGoogleAuthenticationService authentificationService;
+        IRestService restService;
         MainViewModel mainViewModel;
         public MainPage(MainViewModel vm, IConfiguration config,
-            IGoogleAuthentificationService authentificationService)
+            IGoogleAuthenticationService authentificationService,
+            IRestService restService)
         {
+           // Shell.Current.GoToAsync("//LoginPage");
+           this.restService = restService;
             this.authentificationService = authentificationService;
             this.config = config;
             InitializeComponent();
@@ -29,6 +33,8 @@ namespace SpiritsFirstTry
             mainViewModel = vm;
             vm.SetupProgressBar(this.DataLoadingProgressBar);
             vm.SetupMap(MainMapView);
+
+
         }
         public void TapSearch(object sender, TappedEventArgs args)
         {
@@ -46,13 +52,33 @@ namespace SpiritsFirstTry
             Shell.Current.GoToAsync("//Habitats", navigaionParameter);
             Shell.Current.GoToAsync("//Spirits", navigaionParameter);
         }
-
-        private async Task doAuth()
+        public void TapLogin(object sender, TappedEventArgs args)
         {
-            //var client_id = config["auth:client_id"];
-            await authentificationService.LogoutAsync();
-            await authentificationService.AythenticateAsync();
-            var userDTO = await authentificationService.GetCurrentUserAsync();
+
+            _ = doLogin();
+        }
+
+        private async Task doLogin()
+        {
+            try
+            {
+                await authentificationService.LogoutAsync();
+            }
+            catch
+            {
+
+            }
+            try
+            {
+                await authentificationService.AythenticateAsync();
+                var token = (await authentificationService.GetCurrentUserAsync()).Token;
+                await restService.AddAuthHeader(token);
+                await mainViewModel.SetupAdminImage(adminImage);
+            }
+            catch (Exception e)
+            {
+
+            }
         }
 
 

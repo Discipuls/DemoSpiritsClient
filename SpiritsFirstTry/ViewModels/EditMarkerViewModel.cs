@@ -10,6 +10,7 @@ using SpiritsFirstTry.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -47,15 +48,26 @@ namespace SpiritsFirstTry.ViewModels
             GraphicsOverlayCollection overlays = MarkerMapView.GraphicsOverlays;
             overlays.Add(SpiritsGraphicOverlay);
             MarkerMapView.GraphicsOverlays = overlays;
+            PictureMarkerSymbol pinSymbol;
+            try
+            {
+                string localFilePath = System.IO.Path.Combine(dataDirectory, "MarkerImage_" + SpiritDTO.Id.ToString() + "_.png");
 
-            string localFilePath = System.IO.Path.Combine(dataDirectory, "MarkerImage_" + SpiritDTO.Id.ToString() + "_.png");
+                using FileStream localFileStream = File.OpenRead(localFilePath);
+                pinSymbol = await PictureMarkerSymbol.CreateAsync(localFileStream);
 
-            using FileStream localFileStream = File.OpenRead(localFilePath);
+            }
+            catch
+            {
+                Assembly currentAssembly = Assembly.GetExecutingAssembly();
+                Stream resourceStream = currentAssembly.GetManifestResourceStream("SpiritsFirstTry.Resources.Images.newspirit.png");
+                pinSymbol = await PictureMarkerSymbol.CreateAsync(resourceStream);
+            }
 
-            PictureMarkerSymbol pinSymbol = await PictureMarkerSymbol.CreateAsync(localFileStream);
+
             SpiritDTO.markerSymbol = pinSymbol;
-            pinSymbol.Width = 40;
-            pinSymbol.Height = 40;
+            pinSymbol.Width = 40/1.3;
+            pinSymbol.Height = 40/1.3;
 
             Graphic pinGraphic = new Graphic(SpiritDTO.mapPoint, pinSymbol);
         //    SpiritDTO.pinGraphic = pinGraphic;

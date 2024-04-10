@@ -76,7 +76,7 @@ namespace SpiritsFirstTry.Services
 
                     resultSpiritsBasicsDTOs.Add(apiSpirit);
 
-                    await progressBar.ProgressTo(progressBar.Progress + (0.75 / APISpirits.Count), 500, Easing.Linear);
+                    await progressBar.ProgressTo(progressBar.Progress + (0.75 / APISpirits.Count), 5, Easing.Linear);
                     //TODO fix progress bar
                 }
 
@@ -90,9 +90,16 @@ namespace SpiritsFirstTry.Services
             {
                 foreach (var s in APISpirits)
                 {
-                    await UpdateMissedSpirit(s);
+                    try
+                    {
+                        await UpdateMissedSpirit(s);
+                    }
+                    catch (Exception ex)
+                    {
+                        Application.Current.MainPage.DisplayAlert("Exception", ex.Message, "Ok");
+                    }
 
-                    await progressBar.ProgressTo(progressBar.Progress + (0.75 / APISpirits.Count), 500, Easing.Linear);
+                    await progressBar.ProgressTo(progressBar.Progress + (0.75 / APISpirits.Count), 5, Easing.Linear);
                     //TODO fix progress bar
                 }
 
@@ -179,10 +186,25 @@ namespace SpiritsFirstTry.Services
             spiritsSW.Flush();
             spiritsMS.Position = 0;
 
-            string localFilePath = Path.Combine(dataDirectory, "Spirits.json");
-            using FileStream fileStream = File.OpenWrite(localFilePath);
 
-            await spiritsMS.CopyToAsync(fileStream);
+
+            try
+            {
+                string localFilePath = Path.Combine(dataDirectory, "Spirits.json");
+                try
+                {
+                    File.Decrypt(localFilePath);
+                }
+                catch
+                {
+
+                }
+                using FileStream fileStream = File.OpenWrite(localFilePath);
+                await spiritsMS.CopyToAsync(fileStream);
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         private async Task<GetSpiritDTO> UpdateMissedSpirit(GetSpiritBasicsDTO spiritBasicsDTO)
