@@ -22,4 +22,4 @@ To run this app you\`ll need to create **`appsettings.Development.json`** file t
 *[ArcGis API key]* - key to connect ArcGIS API. [Official docs](https://developers.arcgis.com/documentation/mapping-apis-and-services/security/api-keys/ "Official docs")
 *[google client id for auth]*  - required by GoogleSignInOptions.Builder to request id token.  Obtained in google cloud console -> apis&services -> credentials
 ## Download
-[Spirits.apk](https://drive.google.com/file/d/11jTjoyiZWQdZzLfWg_waIXe7WGyvWZq5/view?usp=sharing "Spirits.apk")
+[Spirits.apk](https://drive.google.com/file/d/11jTjoyiZWQdZzLfWg_waIXe7WGyvWZq5/view?usp=sharing "Spirits.apk"). On first launch there will be an error message like "Spirits.json not found in cache". That's ok, nothing went wrong, it just happens because the app is still in development and that message is sort of debug info. 
